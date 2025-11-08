@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Online - Ujian Sekolah</title>
+    <style>
+       * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --gray: #6b7280;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 0;
+            color: var(--dark);
+        }
+
+        .app-container {
+            max-width: 100%;
+            min-height: 100vh;
+            background: var(--light);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Login Screen */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-card {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .app-subtitle {
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:active {
+            background: var(--primary-dark);
+            transform: translateY(2px);
+        }
+
+        .btn-success {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            min-height: 100vh;
+            padding: 20px;
+            background: var(--light);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .user-info h2 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .user-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .ujian-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ujian-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--primary);
+        }
+
+        .ujian-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .ujian-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .ujian-meta {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+
+        .ujian-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-selesai {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-aktif {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-tunggu {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Ujian Screen */
+        .ujian-container {
+            min-height: 100vh;
+            background: var(--light);
+            position: relative;
+        }
+
+        .ujian-header {
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .timer {
+            background: var(--primary);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 10px 0;
+            transition: background 0.3s;
+        }
+
+        .timer-warning {
+            background: var(--warning);
+        }
+
+        .timer-danger {
+            background: var(--danger);
+        }
+
+        .pdf-container {
+            height: 60vh;
+            background: white;
+            margin: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .pdf-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Sidebar Jawaban */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            z-index: 2000;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .sidebar-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .close-sidebar {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .biodata-section {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .biodata-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .biodata-label {
+            font-weight: 600;
+            width: 120px;
+            color: var(--gray);
+        }
+
+        .biodata-value {
+            flex: 1;
+            color: var(--dark);
+        }
+
+        .jawaban-section {
+            padding: 20px;
+        }
+
+        /* STYLE LJK YANG BARU - SESUAI PERMINTAAN */
+        .ljk-container {
+            background: white;
+            border: 2px solid #1f2937;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .ljk-header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1f2937;
+        }
+
+        .ljk-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .ljk-instruction {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .ljk-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        .ljk-table td {
+            padding: 8px 4px;
+            border: 1px solid #d1d5db;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .ljk-soal-number {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #374151;
+            width: 40px;
+            text-align: center;
+            background: #f9fafb;
+        }
+
+        .ljk-bubble-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .ljk-bubble {
+            width: 16px; /* 4mm equivalent */
+            height: 16px; /* 4mm equivalent */
+            border: 2px solid #374151;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ljk-bubble.selected {
+            background: #1f2937;
+            border-color: #1f2937;
+        }
+
+        .ljk-bubble-label {
+            font-size: 0.6rem;
+            font-weight: bold;
+            color: white;
+            display: none;
+        }
+
+        .ljk-bubble.selected .ljk-bubble-label {
+            display: block;
+        }
+
+        .ljk-option-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 2px;
+        }
+
+        .ljk-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 5px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .ljk-row:last-child {
+            border-bottom: none;
+        }
+
+        .soal-number {
+            width: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #374151;
+            text-align: center;
+        }
+
+        .bubbles-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex: 1;
+        }
+
+        .bubble-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .bubble-option-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .submit-section {
+            padding: 20px;
+            background: #f8fafc;
+            border-top: 1px solid #e5e7eb;
+            position: sticky;
+            bottom: 0;
+        }
+
+        /* Loading & Messages */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 4000;
+            display: none;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .message.success {
+            background: var(--secondary);
+            display: block;
+        }
+
+        .message.error {
+            background: var(--danger);
+            display: block;
+        }
+
+        .message.warning {
+            background: var(--warning);
+            display: block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .app-container {
+                max-width: 400px;
+                margin: 20px auto;
+                min-height: calc(100vh - 40px);
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            }
+
+            .sidebar {
+                width: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Login Screen -->
+        <div class="login-container" id="loginScreen">
+            <div class="login-card">
+                <div class="logo">📚</div>
+                <h1 class="app-title">CBT Online</h1>
+                <p class="app-subtitle">Sistem Ujian Sekolah Digital</p>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-input" id="username" placeholder="Masukkan username" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" id="password" placeholder="Masukkan password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span>Masuk</span>
+                        <span>🔑</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="dashboard" id="dashboard" style="display: none;">
+            <div class="header">
+                <div class="user-info">
+                    <h2 id="userName">Nama User</h2>
+                    <p id="userClass">Kelas</p>
+                </div>
+                <button class="logout-btn" onclick="logout()">Keluar</button>
+            </div>
+
+            <h3 class="section-title">Ujian Aktif</h3>
+            <div class="ujian-list" id="ujianList">
+                <!-- Daftar ujian akan dimuat di sini -->
+            </div>
+        </div>
+
+        <!-- Ujian Screen -->
+        <div class="ujian-container" id="ujianScreen" style="display: none;">
+            <div class="ujian-header">
+                <h3 id="ujianTitle">Mata Pelajaran</h3>
+                <div class="timer" id="timer">60:00</div>
+            </div>
+
+            <div class="pdf-container">
+                <iframe class="pdf-iframe" id="pdfViewer"></iframe>
+            </div>
+
+            <button class="fab" onclick="toggleSidebar()">📝</button>
+        </div>
+
+        <!-- Sidebar Jawaban -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3 class="sidebar-title">Lembar Jawaban Komputer</h3>
+                <button class="close-sidebar" onclick="toggleSidebar()">×</button>
+            </div>
+
+            <div class="biodata-section">
+                <div class="biodata-item">
+                    <span class="biodata-label">Nama</span>
+                    <span class="biodata-value" id="bioNama">-</span>
+                </div>
+                <div class="biodata-item">
+                    <span class="biodata-label">Kelas</span>
+                    <span class="biodata-value" id="bioKelas">-</span>
+                </div>
+                <div class="biodata-item">
+                    <span class="biodata-label">Mata Pelajaran</span>
+                    <span class="biodata-value" id="bioMapel">-</span>
+                </div>
+                <div class="biodata-item">
+                    <span class="biodata-label">Pengampu</span>
+                    <span class="biodata-value" id="bioPengampu">-</span>
+                </div>
+                <div class="biodata-item">
+                    <span class="biodata-label">Tanggal Ujian</span>
+                    <span class="biodata-value" id="bioTanggal">-</span>
+                </div>
+            </div>
+
+            <div class="jawaban-section">
+                <!-- LJK Container -->
+                <div class="ljk-container">
+                    <div class="ljk-header">
+                        <div class="ljk-title">LEMBAR JAWABAN KOMPUTER</div>
+                        <div class="ljk-instruction">Klik bulatan untuk memilih jawaban (Diameter: 4mm)</div>
+                    </div>
+                    
+                    <div id="ljkRowsContainer">
+                        <!-- LJK rows akan di-generate di sini -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <button class="btn btn-success" onclick="submitJawaban()">
+                    <span>📤 Kirim Jawaban</span>
+                </button>
+                <p style="text-align: center; margin-top: 10px; font-size: 0.8rem; color: #6b7280;">
+                    Pastikan semua jawaban sudah benar sebelum mengirim
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Message -->
+    <div class="message" id="message"></div>
+
+    <script>
+        // Konfigurasi
+        const API_URL = 'https://script.google.com/macros/s/AKfycbx9T6h-zyAxPiGoKvjvMIvXQtt7HNkJsn053y-xWCHAiq-6bcxX3DbnJOHnQTqCC9QfSg/exec';
+        
+        // State aplikasi
+        let currentState = {
+            sessionId: null,
+            userData: null,
+            currentUjian: null,
+            jawaban: {},
+            timer: null,
+            timeLeft: 0
+        };
+
+        // DOM Elements
+        const loginScreen = document.getElementById('loginScreen');
+        const dashboard = document.getElementById('dashboard');
+        const ujianScreen = document.getElementById('ujianScreen');
+        const sidebar = document.getElementById('sidebar');
+        const loading = document.getElementById('loading');
+        const message = document.getElementById('message');
+        const ljkRowsContainer = document.getElementById('ljkRowsContainer');
+
+        // Event Listeners
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
+        document.addEventListener('DOMContentLoaded', checkExistingSession);
+
+        // Fungsi utama
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            showLoading();
+            
+            try {
+                const response = await callAPI('login', {
+                    username: username,
+                    password: password
+                });
+                
+                if (response.success) {
+                    currentState.sessionId = response.session_id;
+                    currentState.userData = response.user_data;
+                    
+                    // Simpan session di localStorage
+                    localStorage.setItem('cbt_session', response.session_id);
+                    localStorage.setItem('cbt_user', JSON.stringify(response.user_data));
+                    
+                    showDashboard();
+                    showMessage('Login berhasil!', 'success');
+                } else {
+                    showMessage(response.error || 'Login gagal', 'error');
+                }
+            } catch (error) {
+                showMessage('Terjadi kesalahan saat login', 'error');
+                console.error('Login error:', error);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function checkExistingSession() {
+            const savedSession = localStorage.getItem('cbt_session');
+            const savedUser = localStorage.getItem('cbt_user');
+            
+            if (savedSession && savedUser) {
+                currentState.sessionId = savedSession;
+                currentState.userData = JSON.parse(savedUser);
+                showDashboard();
+            }
+        }
+
+        async function showDashboard() {
+            loginScreen.style.display = 'none';
+            ujianScreen.style.display = 'none';
+            dashboard.style.display = 'block';
+            
+            // Update user info
+            document.getElementById('userName').textContent = currentState.userData.nama_lengkap;
+            document.getElementById('userClass').textContent = currentState.userData.kelas;
+            
+            // Load daftar ujian
+            await loadUjianAktif();
+        }
+
+        async function loadUjianAktif() {
+            showLoading();
+            
+            try {
+                const response = await callAPI('get_ujian_aktif', {
+                    session_id: currentState.sessionId
+                });
+                
+                const ujianList = document.getElementById('ujianList');
+                ujianList.innerHTML = '';
+                
+                if (response.ujian_aktif && response.ujian_aktif.length > 0) {
+                    response.ujian_aktif.forEach(ujian => {
+                        const ujianCard = document.createElement('div');
+                        ujianCard.className = 'ujian-card';
+                        
+                        let statusHtml = '';
+                        let buttonHtml = '';
+                        
+                        if (ujian.sudah_dikerjakan) {
+                            statusHtml = `<span class="ujian-status status-selesai">✓ Selesai</span>`;
+                            buttonHtml = `<button class="btn" disabled>Sudah Dikerjakan</button>`;
+                        } else if (ujian.bisa_dikerjakan) {
+                            statusHtml = `<span class="ujian-status status-aktif">Aktif</span>`;
+                            buttonHtml = `<button class="btn btn-primary" onclick="startUjian('${ujian.soal_id}')">Mulai Ujian</button>`;
+                        } else {
+                            statusHtml = `<span class="ujian-status status-tunggu">Menunggu</span>`;
+                            buttonHtml = `<button class="btn" disabled>Belum Waktunya</button>`;
+                        }
+                        
+                        ujianCard.innerHTML = `
+                            <div class="ujian-header">
+                                <div style="flex: 1;">
+                                    <div class="ujian-title">${ujian.mata_pelajaran}</div>
+                                    <div class="ujian-meta">${ujian.pengampu} • ${ujian.jumlah_soal} soal • ${ujian.durasi} menit</div>
+                                    <div class="ujian-meta">Tanggal: ${formatTanggal(ujian.tanggal_ujian)}</div>
+                                </div>
+                                ${statusHtml}
+                            </div>
+                            ${buttonHtml}
+                        `;
+                        
+                        ujianList.appendChild(ujianCard);
+                    });
+                } else {
+                    ujianList.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 40px;">Tidak ada ujian aktif</p>';
+                }
+            } catch (error) {
+                showMessage('Gagal memuat daftar ujian', 'error');
+                console.error('Load ujian error:', error);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function startUjian(soalId) {
+            showLoading();
+            
+            try {
+                const response = await callAPI('start_ujian', {
+                    session_id: currentState.sessionId,
+                    soal_id: soalId
+                });
+                
+                if (response.error) {
+                    showMessage(response.error, 'error');
+                    return;
+                }
+                
+                currentState.currentUjian = response;
+                currentState.jawaban = {};
+                currentState.timeLeft = response.durasi * 60;
+                
+                showUjianScreen();
+                startTimer();
+                
+            } catch (error) {
+                showMessage('Gagal memulai ujian', 'error');
+                console.error('Start ujian error:', error);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function showUjianScreen() {
+            dashboard.style.display = 'none';
+            ujianScreen.style.display = 'block';
+            
+            // Update UI
+            document.getElementById('ujianTitle').textContent = currentState.currentUjian.mata_pelajaran;
+            document.getElementById('pdfViewer').src = currentState.currentUjian.link_soal;
+            
+            // Update biodata sidebar
+            document.getElementById('bioNama').textContent = currentState.userData.nama_lengkap;
+            document.getElementById('bioKelas').textContent = currentState.userData.kelas;
+            document.getElementById('bioMapel').textContent = currentState.currentUjian.mata_pelajaran;
+            document.getElementById('bioPengampu').textContent = currentState.currentUjian.pengampu;
+            document.getElementById('bioTanggal').textContent = formatTanggal(currentState.currentUjian.tanggal_ujian);
+            
+            // Generate LJK
+            generateLJK();
+        }
+
+        function startTimer() {
+            updateTimerDisplay();
+            
+            currentState.timer = setInterval(() => {
+                currentState.timeLeft--;
+                updateTimerDisplay();
+                
+                if (currentState.timeLeft <= 0) {
+                    clearInterval(currentState.timer);
+                    submitJawaban();
+                    showMessage('Waktu ujian telah habis! Jawaban otomatis terkirim.', 'warning');
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(currentState.timeLeft / 60);
+            const seconds = currentState.timeLeft % 60;
+            const timerElement = document.getElementById('timer');
+            
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Change color when time is running out
+            if (currentState.timeLeft < 300) {
+                timerElement.className = 'timer timer-warning';
+            }
+            if (currentState.timeLeft < 60) {
+                timerElement.className = 'timer timer-danger';
+            }
+        }
+
+        function generateLJK() {
+            ljkRowsContainer.innerHTML = '';
+            const jumlahSoal = currentState.currentUjian.jumlah_soal;
+            
+            for (let i = 1; i <= jumlahSoal; i++) {
+                const row = document.createElement('div');
+                row.className = 'ljk-row';
+                
+                const currentJawaban = currentState.jawaban['s' + i];
+                
+                row.innerHTML = `
+                    <div class="soal-number">${i}</div>
+                    <div class="bubbles-container">
+                        <div class="bubble-group">
+                            <div class="ljk-bubble ${currentJawaban === 'A' ? 'selected' : ''}" data-value="A" data-soal="${i}">
+                                <span class="ljk-bubble-label">A</span>
+                            </div>
+                            <div class="bubble-option-label">A</div>
+                        </div>
+                        <div class="bubble-group">
+                            <div class="ljk-bubble ${currentJawaban === 'B' ? 'selected' : ''}" data-value="B" data-soal="${i}">
+                                <span class="ljk-bubble-label">B</span>
+                            </div>
+                            <div class="bubble-option-label">B</div>
+                        </div>
+                        <div class="bubble-group">
+                            <div class="ljk-bubble ${currentJawaban === 'C' ? 'selected' : ''}" data-value="C" data-soal="${i}">
+                                <span class="ljk-bubble-label">C</span>
+                            </div>
+                            <div class="bubble-option-label">C</div>
+                        </div>
+                        <div class="bubble-group">
+                            <div class="ljk-bubble ${currentJawaban === 'D' ? 'selected' : ''}" data-value="D" data-soal="${i}">
+                                <span class="ljk-bubble-label">D</span>
+                            </div>
+                            <div class="bubble-option-label">D</div>
+                        </div>
+                        <div class="bubble-group">
+                            <div class="ljk-bubble ${currentJawaban === 'E' ? 'selected' : ''}" data-value="E" data-soal="${i}">
+                                <span class="ljk-bubble-label">E</span>
+                            </div>
+                            <div class="bubble-option-label">E</div>
+                        </div>
+                    </div>
+                `;
+                
+                // Add click event to bubbles
+                const bubbles = row.querySelectorAll('.ljk-bubble');
+                bubbles.forEach(bubble => {
+                    bubble.addEventListener('click', function() {
+                        const value = this.getAttribute('data-value');
+                        const soalNumber = parseInt(this.getAttribute('data-soal'));
+                        
+                        // Update jawaban
+                        currentState.jawaban['s' + soalNumber] = value;
+                        
+                        // Update UI - hanya untuk bubble dalam row yang sama
+                        bubbles.forEach(b => b.classList.remove('selected'));
+                        this.classList.add('selected');
+                    });
+                });
+                
+                ljkRowsContainer.appendChild(row);
+            }
+        }
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+        }
+
+        async function submitJawaban() {
+            const totalSoal = currentState.currentUjian.jumlah_soal;
+            const totalTerjawab = Object.keys(currentState.jawaban).length;
+            
+            if (totalTerjawab === 0) {
+                if (!confirm('Anda belum menjawab soal apapun. Yakin ingin submit?')) {
+                    return;
+                }
+            } else {
+                if (!confirm(`Anda telah menjawab ${totalTerjawab} dari ${totalSoal} soal. Yakin ingin mengirim jawaban?`)) {
+                    return;
+                }
+            }
+            
+            showLoading();
+            
+            try {
+                console.log('Mengirim jawaban:', currentState.jawaban);
+                
+                const response = await callAPI('submit_jawaban', {
+                    session_id: currentState.sessionId,
+                    soal_id: currentState.currentUjian.soal_id,
+                    jawaban: JSON.stringify(currentState.jawaban)
+                });
+                
+                console.log('Response submit:', response);
+                
+                if (response.success) {
+                    showMessage(`✅ Jawaban berhasil dikirim dan tersimpan!\\nScore: ${response.score}\\nBenar: ${response.total_benar}/${totalSoal}`, 'success');
+                    
+                    // Clear timer
+                    if (currentState.timer) {
+                        clearInterval(currentState.timer);
+                    }
+                    
+                    // Refresh daftar ujian untuk update status
+                    await loadUjianAktif();
+                    
+                    // Kembali ke dashboard setelah 3 detik
+                    setTimeout(() => {
+                        showDashboard();
+                    }, 3000);
+                } else {
+                    showMessage(`❌ Gagal mengirim jawaban: ${response.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('Submit error:', error);
+                showMessage('❌ Terjadi kesalahan saat mengirim jawaban', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function logout() {
+            try {
+                await callAPI('logout', {
+                    session_id: currentState.sessionId
+                });
+            } catch (error) {
+                // Ignore errors on logout
+            }
+            
+            // Clear state
+            currentState = {
+                sessionId: null,
+                userData: null,
+                currentUjian: null,
+                jawaban: {},
+                timer: null,
+                timeLeft: 0
+            };
+            
+            // Clear localStorage
+            localStorage.removeItem('cbt_session');
+            localStorage.removeItem('cbt_user');
+            
+            // Clear form login
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            
+            // Show login screen
+            loginScreen.style.display = 'flex';
+            dashboard.style.display = 'none';
+            ujianScreen.style.display = 'none';
+            
+            showMessage('Anda telah logout', 'success');
+        }
+
+        // Utility functions
+        async function callAPI(action, params) {
+            const formData = new FormData();
+            formData.append('action', action);
+            
+            for (const key in params) {
+                formData.append(key, params[key]);
+            }
+            
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                body: formData
+            });
+            
+            return await response.json();
+        }
+
+        function showLoading() {
+            loading.classList.add('active');
+        }
+
+        function hideLoading() {
+            loading.classList.remove('active');
+        }
+
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = `message ${type}`;
+            
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 5000);
+        }
+
+        function formatTanggal(tanggal) {
+            if (!tanggal) return '-';
+            const date = new Date(tanggal);
+            return date.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Handle back button
+        window.addEventListener('popstate', function(event) {
+            if (ujianScreen.style.display !== 'none') {
+                if (confirm('Apakah Anda yakin ingin keluar dari ujian? Jawaban yang belum dikirim akan hilang.')) {
+                    showDashboard();
+                } else {
+                    history.pushState(null, null, window.location.href);
+                }
+            }
+        });
+
+        // Prevent going back during exam
+        history.pushState(null, null, window.location.href);
+    </script>
+</body>
+</html>
