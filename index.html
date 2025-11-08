@@ -789,102 +789,141 @@
             }
         }
 
-        async function showDashboard() {
-            loginScreen.style.display = 'none';
-            ujianScreen.style.display = 'none';
-            dashboard.style.display = 'block';
-            
-            // Update user info
-            document.getElementById('userName').textContent = currentState.userData.nama_lengkap;
-            document.getElementById('userClass').textContent = currentState.userData.kelas;
-            
-            // Load daftar ujian
-            await loadUjianAktif();
-        }
+       // PERBAIKAN: Fungsi showDashboard yang lebih clean
+function showDashboard() {
+    loginScreen.style.display = 'none';
+    ujianScreen.style.display = 'none';
+    dashboard.style.display = 'block';
+    
+    // Pastikan sidebar tertutup
+    sidebar.classList.remove('open');
+    
+    // Update user info
+    document.getElementById('userName').textContent = currentState.userData.nama_lengkap;
+    document.getElementById('userClass').textContent = currentState.userData.kelas;
+    
+    // Load daftar ujian
+    loadUjianAktif();
+}
 
-        async function loadUjianAktif() {
-            showLoading();
-            
-            try {
-                const response = await callAPI('get_ujian_aktif', {
-                    session_id: currentState.sessionId
-                });
+// PERBAIKAN: Fungsi loadUjianAktif dengan debug info
+async function loadUjianAktif() {
+    showLoading();
+    
+    try {
+        const response = await callAPI('get_ujian_aktif', {
+            session_id: currentState.sessionId
+        });
+        
+        console.log('Data ujian aktif:', response.ujian_aktif);
+        
+        const ujianList = document.getElementById('ujianList');
+        ujianList.innerHTML = '';
+        
+        if (response.ujian_aktif && response.ujian_aktif.length > 0) {
+            response.ujian_aktif.forEach(ujian => {
+                const ujianCard = document.createElement('div');
+                ujianCard.className = 'ujian-card';
                 
-                const ujianList = document.getElementById('ujianList');
-                ujianList.innerHTML = '';
+                let statusHtml = '';
+                let buttonHtml = '';
                 
-                if (response.ujian_aktif && response.ujian_aktif.length > 0) {
-                    response.ujian_aktif.forEach(ujian => {
-                        const ujianCard = document.createElement('div');
-                        ujianCard.className = 'ujian-card';
-                        
-                        let statusHtml = '';
-                        let buttonHtml = '';
-                        
-                        if (ujian.sudah_dikerjakan) {
-                            statusHtml = `<span class="ujian-status status-selesai">✓ Selesai</span>`;
-                            buttonHtml = `<button class="btn" disabled>Sudah Dikerjakan</button>`;
-                        } else if (ujian.bisa_dikerjakan) {
-                            statusHtml = `<span class="ujian-status status-aktif">Aktif</span>`;
-                            buttonHtml = `<button class="btn btn-primary" onclick="startUjian('${ujian.soal_id}')">Mulai Ujian</button>`;
-                        } else {
-                            statusHtml = `<span class="ujian-status status-tunggu">Menunggu</span>`;
-                            buttonHtml = `<button class="btn" disabled>Belum Waktunya</button>`;
-                        }
-                        
-                        ujianCard.innerHTML = `
-                            <div class="ujian-header">
-                                <div style="flex: 1;">
-                                    <div class="ujian-title">${ujian.mata_pelajaran}</div>
-                                    <div class="ujian-meta">${ujian.pengampu} • ${ujian.jumlah_soal} soal • ${ujian.durasi} menit</div>
-                                    <div class="ujian-meta">Tanggal: ${formatTanggal(ujian.tanggal_ujian)}</div>
-                                </div>
-                                ${statusHtml}
-                            </div>
-                            ${buttonHtml}
-                        `;
-                        
-                        ujianList.appendChild(ujianCard);
-                    });
+                console.log(`Soal ${ujian.soal_id}: sudah_dikerjakan=${ujian.sudah_dikerjakan}, bisa_dikerjakan=${ujian.bisa_dikerjakan}`);
+                
+                // PERBAIKAN: Logika status yang lebih akurat
+                if (ujian.sudah_dikerjakan) {
+                    statusHtml = `<span class="ujian-status status-selesai">✓ Selesai</span>`;
+                    buttonHtml = `<button class="btn" disabled>Sudah Dikerjakan</button>`;
+                } else if (ujian.bisa_dikerjakan) {
+                    statusHtml = `<span class="ujian-status status-aktif">Aktif</span>`;
+                    buttonHtml = `<button class="btn btn-primary" onclick="startUjian('${ujian.soal_id}')">Mulai Ujian</button>`;
                 } else {
-                    ujianList.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 40px;">Tidak ada ujian aktif</p>';
+                    statusHtml = `<span class="ujian-status status-tunggu">Menunggu</span>`;
+                    buttonHtml = `<button class="btn" disabled>Belum Waktunya</button>`;
                 }
-            } catch (error) {
-                showMessage('Gagal memuat daftar ujian', 'error');
-                console.error('Load ujian error:', error);
-            } finally {
-                hideLoading();
-            }
+                
+                ujianCard.innerHTML = `
+                    <div class="ujian-header">
+                        <div style="flex: 1;">
+                            <div class="ujian-title">${ujian.mata_pelajaran}</div>
+                            <div class="ujian-meta">${ujian.pengampu} • ${ujian.jumlah_soal} soal • ${ujian.durasi} menit</div>
+                            <div class="ujian-meta">Tanggal: ${formatTanggal(ujian.tanggal_ujian)}</div>
+                            <div class="ujian-meta" style="font-size: 0.7rem; color: #666;">
+                                Status: ${ujian.sudah_dikerjakan ? 'SELESAI' : 'BELUM'} | 
+                                ID: ${ujian.soal_id}
+                            </div>
+                        </div>
+                        ${statusHtml}
+                    </div>
+                    ${buttonHtml}
+                `;
+                
+                ujianList.appendChild(ujianCard);
+            });
+        } else {
+            ujianList.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 40px;">Tidak ada ujian aktif</p>';
         }
+    } catch (error) {
+        showMessage('Gagal memuat daftar ujian', 'error');
+        console.error('Load ujian error:', error);
+    } finally {
+        hideLoading();
+    }
+}
 
-        async function startUjian(soalId) {
-            showLoading();
-            
-            try {
-                const response = await callAPI('start_ujian', {
-                    session_id: currentState.sessionId,
-                    soal_id: soalId
-                });
-                
-                if (response.error) {
-                    showMessage(response.error, 'error');
-                    return;
-                }
-                
-                currentState.currentUjian = response;
-                currentState.jawaban = {};
-                currentState.timeLeft = response.durasi * 60;
-                
-                showUjianScreen();
-                startTimer();
-                
-            } catch (error) {
-                showMessage('Gagal memulai ujian', 'error');
-                console.error('Start ujian error:', error);
-            } finally {
-                hideLoading();
-            }
+// PERBAIKAN: Fungsi startUjian dengan validasi tambahan
+async function startUjian(soalId) {
+    // Cek dulu status ujian sebelum memulai
+    showLoading();
+    
+    try {
+        const response = await callAPI('get_ujian_aktif', {
+            session_id: currentState.sessionId
+        });
+        
+        const ujian = response.ujian_aktif.find(u => u.soal_id === soalId);
+        
+        if (!ujian) {
+            showMessage('Ujian tidak ditemukan', 'error');
+            return;
         }
+        
+        if (ujian.sudah_dikerjakan) {
+            showMessage('Anda sudah mengerjakan ujian ini!', 'warning');
+            await loadUjianAktif(); // Refresh list
+            return;
+        }
+        
+        if (!ujian.bisa_dikerjakan) {
+            showMessage('Ujian belum bisa dimulai', 'warning');
+            return;
+        }
+        
+        // Lanjutkan start ujian
+        const startResponse = await callAPI('start_ujian', {
+            session_id: currentState.sessionId,
+            soal_id: soalId
+        });
+        
+        if (startResponse.error) {
+            showMessage(startResponse.error, 'error');
+            return;
+        }
+        
+        currentState.currentUjian = startResponse;
+        currentState.jawaban = {};
+        currentState.timeLeft = startResponse.durasi * 60;
+        
+        showUjianScreen();
+        startTimer();
+        
+    } catch (error) {
+        showMessage('Gagal memulai ujian', 'error');
+        console.error('Start ujian error:', error);
+    } finally {
+        hideLoading();
+    }
+}
 
         function showUjianScreen() {
             dashboard.style.display = 'none';
@@ -1006,58 +1045,66 @@
             sidebar.classList.toggle('open');
         }
 
-        async function submitJawaban() {
-            const totalSoal = currentState.currentUjian.jumlah_soal;
-            const totalTerjawab = Object.keys(currentState.jawaban).length;
-            
-            if (totalTerjawab === 0) {
-                if (!confirm('Anda belum menjawab soal apapun. Yakin ingin submit?')) {
-                    return;
-                }
-            } else {
-                if (!confirm(`Anda telah menjawab ${totalTerjawab} dari ${totalSoal} soal. Yakin ingin mengirim jawaban?`)) {
-                    return;
-                }
-            }
-            
-            showLoading();
-            
-            try {
-                console.log('Mengirim jawaban:', currentState.jawaban);
-                
-                const response = await callAPI('submit_jawaban', {
-                    session_id: currentState.sessionId,
-                    soal_id: currentState.currentUjian.soal_id,
-                    jawaban: JSON.stringify(currentState.jawaban)
-                });
-                
-                console.log('Response submit:', response);
-                
-                if (response.success) {
-                    showMessage(`✅ Jawaban berhasil dikirim dan tersimpan!\\nScore: ${response.score}\\nBenar: ${response.total_benar}/${totalSoal}`, 'success');
-                    
-                    // Clear timer
-                    if (currentState.timer) {
-                        clearInterval(currentState.timer);
-                    }
-                    
-                    // Refresh daftar ujian untuk update status
-                    await loadUjianAktif();
-                    
-                    // Kembali ke dashboard setelah 3 detik
-                    setTimeout(() => {
-                        showDashboard();
-                    }, 3000);
-                } else {
-                    showMessage(`❌ Gagal mengirim jawaban: ${response.error}`, 'error');
-                }
-            } catch (error) {
-                console.error('Submit error:', error);
-                showMessage('❌ Terjadi kesalahan saat mengirim jawaban', 'error');
-            } finally {
-                hideLoading();
-            }
+async function submitJawaban() {
+    const totalSoal = currentState.currentUjian.jumlah_soal;
+    const totalTerjawab = Object.keys(currentState.jawaban).length;
+    
+    if (totalTerjawab === 0) {
+        if (!confirm('Anda belum menjawab soal apapun. Yakin ingin submit?')) {
+            return;
         }
+    } else {
+        if (!confirm(`Anda telah menjawab ${totalTerjawab} dari ${totalSoal} soal. Yakin ingin mengirim jawaban?`)) {
+            return;
+        }
+    }
+    
+    showLoading();
+    
+    try {
+        console.log('Mengirim jawaban:', currentState.jawaban);
+        
+        const response = await callAPI('submit_jawaban', {
+            session_id: currentState.sessionId,
+            soal_id: currentState.currentUjian.soal_id,
+            jawaban: JSON.stringify(currentState.jawaban)
+        });
+        
+        console.log('Response submit:', response);
+        
+        if (response.success) {
+            showMessage(`✅ Jawaban berhasil dikirim dan tersimpan!\\nScore: ${response.score}\\nBenar: ${response.total_benar}/${totalSoal}`, 'success');
+            
+            // PERBAIKAN 1: Clear timer
+            if (currentState.timer) {
+                clearInterval(currentState.timer);
+                currentState.timer = null;
+            }
+            
+            // PERBAIKAN 2: Tutup sidebar jika terbuka
+            sidebar.classList.remove('open');
+            
+            // PERBAIKAN 3: Clear state ujian
+            currentState.currentUjian = null;
+            currentState.jawaban = {};
+            currentState.timeLeft = 0;
+            
+            // PERBAIKAN 4: Refresh daftar ujian untuk update status
+            await loadUjianAktif();
+            
+            // PERBAIKAN 5: Langsung kembali ke dashboard tanpa delay
+            showDashboard();
+            
+        } else {
+            showMessage(`❌ Gagal mengirim jawaban: ${response.error}`, 'error');
+        }
+    } catch (error) {
+        console.error('Submit error:', error);
+        showMessage('❌ Terjadi kesalahan saat mengirim jawaban', 'error');
+    } finally {
+        hideLoading();
+    }
+}
 
         async function logout() {
             try {
