@@ -294,23 +294,67 @@
 
         /* Floating Action Button */
         .fab {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            width: 60px;
-            height: 60px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 60px;
+    height: 60px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: grab;
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    user-select: none;
+    touch-action: none; /* Penting untuk mobile */
+}
+
+.fab:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+    box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4);
+}
+
+.fab:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4);
+}
+
+/* Safe areas untuk mencegah tombol keluar layar */
+.fab-boundary {
+    position: fixed;
+    top: 70px; /* Beri jarak dari header */
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    pointer-events: none;
+    z-index: 999;
+}
+
+/* Animation untuk feedback drag */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.fab-dragging {
+    animation: pulse 0.5s ease-in-out;
+}
+
+/* Style untuk tablet/desktop */
+@media (min-width: 768px) {
+    .fab-boundary {
+        left: calc(50% - 200px + 10px); /* Sesuai dengan container app */
+        right: calc(50% - 200px + 10px);
+    }
+}
 
         /* Sidebar Jawaban */
         .sidebar {
@@ -378,12 +422,41 @@
 
         /* STYLE LJK YANG BARU - SESUAI PERMINTAAN */
         .ljk-container {
-            background: white;
-            border: 2px solid #1f2937;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
+    background: white;
+    border: 2px solid #1f2937;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    max-height: 60vh;
+    overflow-y: auto;
+	}
+
+	/* PERBAIKAN: Grid yang dinamis berdasarkan jumlah soal */
+	#ljkRowsContainer {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 15px;
+    transition: grid-template-columns 0.3s ease;
+	}
+
+	/* Untuk 20-25 soal: 5 kolom */
+	#ljkRowsContainer {
+    grid-template-columns: repeat(5, 1fr);
+	}
+
+	/* Untuk 26-36 soal: 6 kolom */
+	@media (min-width: 768px) {
+    #ljkRowsContainer.ljk-6-col {
+        grid-template-columns: repeat(6, 1fr);
+    }
+	}
+
+	/* Untuk 37+ soal: 7 kolom */
+	@media (min-width: 1024px) {
+    #ljkRowsContainer.ljk-7-col {
+        grid-template-columns: repeat(7, 1fr);
+    }
+	}
 
         .ljk-header {
             text-align: center;
@@ -433,18 +506,18 @@
             gap: 5px;
         }
 
-        .ljk-bubble {
-            width: 16px; /* 4mm equivalent */
-            height: 16px; /* 4mm equivalent */
-            border: 2px solid #374151;
-            border-radius: 50%;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    .ljk-bubble {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #374151;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	}
 
         .ljk-bubble.selected {
             background: #1f2937;
@@ -470,23 +543,26 @@
         }
 
         .ljk-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-            padding: 5px 0;
-            border-bottom: 1px solid #f3f4f6;
-        }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: #f9fafb;
+	}
+
+	.soal-number {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #374151;
+    min-width: 20px;
+    text-align: center;
+	}
 
         .ljk-row:last-child {
             border-bottom: none;
-        }
-
-        .soal-number {
-            width: 40px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #374151;
-            text-align: center;
         }
 
         .bubbles-container {
@@ -740,7 +816,19 @@
 
         // Event Listeners
         document.getElementById('loginForm').addEventListener('submit', handleLogin);
-        document.addEventListener('DOMContentLoaded', checkExistingSession);
+        
+		// Event listener untuk halaman loaded
+	document.addEventListener('DOMContentLoaded', function() {
+    checkExistingSession();
+    
+    // Inisialisasi FAB ketika halaman dimuat
+    setTimeout(() => {
+        if (document.querySelector('.fab')) {
+            initDraggableFab();
+            loadFabPosition();
+        }
+    }, 500);
+	});
 
         // Fungsi utama
         async function handleLogin(e) {
@@ -789,7 +877,7 @@
             }
         }
 
-       // PERBAIKAN: Fungsi showDashboard yang lebih clean
+// PERBAIKAN: Fungsi showDashboard dengan reset FAB
 function showDashboard() {
     loginScreen.style.display = 'none';
     ujianScreen.style.display = 'none';
@@ -797,6 +885,9 @@ function showDashboard() {
     
     // Pastikan sidebar tertutup
     sidebar.classList.remove('open');
+    
+    // Reset FAB position ketika keluar dari ujian
+    resetFabPosition();
     
     // Update user info
     document.getElementById('userName').textContent = currentState.userData.nama_lengkap;
@@ -925,24 +1016,31 @@ async function startUjian(soalId) {
     }
 }
 
-        function showUjianScreen() {
-            dashboard.style.display = 'none';
-            ujianScreen.style.display = 'block';
-            
-            // Update UI
-            document.getElementById('ujianTitle').textContent = currentState.currentUjian.mata_pelajaran;
-            document.getElementById('pdfViewer').src = currentState.currentUjian.link_soal;
-            
-            // Update biodata sidebar
-            document.getElementById('bioNama').textContent = currentState.userData.nama_lengkap;
-            document.getElementById('bioKelas').textContent = currentState.userData.kelas;
-            document.getElementById('bioMapel').textContent = currentState.currentUjian.mata_pelajaran;
-            document.getElementById('bioPengampu').textContent = currentState.currentUjian.pengampu;
-            document.getElementById('bioTanggal').textContent = formatTanggal(currentState.currentUjian.tanggal_ujian);
-            
-            // Generate LJK
-            generateLJK();
-        }
+// PERBAIKAN: Fungsi showUjianScreen dengan inisialisasi FAB
+function showUjianScreen() {
+    dashboard.style.display = 'none';
+    ujianScreen.style.display = 'block';
+    
+    // Update UI
+    document.getElementById('ujianTitle').textContent = currentState.currentUjian.mata_pelajaran;
+    document.getElementById('pdfViewer').src = currentState.currentUjian.link_soal;
+    
+    // Update biodata sidebar
+    document.getElementById('bioNama').textContent = currentState.userData.nama_lengkap;
+    document.getElementById('bioKelas').textContent = currentState.userData.kelas;
+    document.getElementById('bioMapel').textContent = currentState.currentUjian.mata_pelajaran;
+    document.getElementById('bioPengampu').textContent = currentState.currentUjian.pengampu;
+    document.getElementById('bioTanggal').textContent = formatTanggal(currentState.currentUjian.tanggal_ujian);
+    
+    // Inisialisasi FAB draggable
+    setTimeout(() => {
+        initDraggableFab();
+        loadFabPosition();
+    }, 100);
+    
+    // Generate LJK
+    generateLJK();
+}
 
         function startTimer() {
             updateTimerDisplay();
@@ -975,75 +1073,113 @@ async function startUjian(soalId) {
             }
         }
 
-        function generateLJK() {
-            ljkRowsContainer.innerHTML = '';
-            const jumlahSoal = currentState.currentUjian.jumlah_soal;
-            
-            for (let i = 1; i <= jumlahSoal; i++) {
-                const row = document.createElement('div');
-                row.className = 'ljk-row';
-                
-                const currentJawaban = currentState.jawaban['s' + i];
-                
-                row.innerHTML = `
-                    <div class="soal-number">${i}</div>
-                    <div class="bubbles-container">
-                        <div class="bubble-group">
-                            <div class="ljk-bubble ${currentJawaban === 'A' ? 'selected' : ''}" data-value="A" data-soal="${i}">
-                                <span class="ljk-bubble-label">A</span>
-                            </div>
-                            <div class="bubble-option-label">A</div>
-                        </div>
-                        <div class="bubble-group">
-                            <div class="ljk-bubble ${currentJawaban === 'B' ? 'selected' : ''}" data-value="B" data-soal="${i}">
-                                <span class="ljk-bubble-label">B</span>
-                            </div>
-                            <div class="bubble-option-label">B</div>
-                        </div>
-                        <div class="bubble-group">
-                            <div class="ljk-bubble ${currentJawaban === 'C' ? 'selected' : ''}" data-value="C" data-soal="${i}">
-                                <span class="ljk-bubble-label">C</span>
-                            </div>
-                            <div class="bubble-option-label">C</div>
-                        </div>
-                        <div class="bubble-group">
-                            <div class="ljk-bubble ${currentJawaban === 'D' ? 'selected' : ''}" data-value="D" data-soal="${i}">
-                                <span class="ljk-bubble-label">D</span>
-                            </div>
-                            <div class="bubble-option-label">D</div>
-                        </div>
-                        <div class="bubble-group">
-                            <div class="ljk-bubble ${currentJawaban === 'E' ? 'selected' : ''}" data-value="E" data-soal="${i}">
-                                <span class="ljk-bubble-label">E</span>
-                            </div>
-                            <div class="bubble-option-label">E</div>
-                        </div>
+// PERBAIKAN: Fungsi generateLJK dengan jumlah soal dinamis
+function generateLJK() {
+    ljkRowsContainer.innerHTML = '';
+    
+    // PERBAIKAN: Ambil jumlah_soal dari currentUjian (bisa 20, 30, 40, dll)
+    const jumlahSoal = currentState.currentUjian.jumlah_soal;
+    console.log(`Generating LJK untuk ${jumlahSoal} soal`);
+    
+    // PERBAIKAN: Hitung jumlah kolom grid berdasarkan jumlah soal
+    const gridColumns = jumlahSoal <= 25 ? 5 : 
+                       jumlahSoal <= 36 ? 6 : 7;
+    
+    // Apply grid columns ke container
+    ljkRowsContainer.style.gridTemplateColumns = `repeat(${gridColumns}, 1fr)`;
+    
+    for (let i = 1; i <= jumlahSoal; i++) {
+        const row = document.createElement('div');
+        row.className = 'ljk-row';
+        
+        const currentJawaban = currentState.jawaban['s' + i];
+        
+        row.innerHTML = `
+            <div class="soal-number">${i}</div>
+            <div class="bubbles-container">
+                <div class="bubble-group">
+                    <div class="ljk-bubble ${currentJawaban === 'A' ? 'selected' : ''}" data-value="A" data-soal="${i}">
+                        <span class="ljk-bubble-label">A</span>
                     </div>
-                `;
+                    <div class="bubble-option-label">A</div>
+                </div>
+                <div class="bubble-group">
+                    <div class="ljk-bubble ${currentJawaban === 'B' ? 'selected' : ''}" data-value="B" data-soal="${i}">
+                        <span class="ljk-bubble-label">B</span>
+                    </div>
+                    <div class="bubble-option-label">B</div>
+                </div>
+                <div class="bubble-group">
+                    <div class="ljk-bubble ${currentJawaban === 'C' ? 'selected' : ''}" data-value="C" data-soal="${i}">
+                        <span class="ljk-bubble-label">C</span>
+                    </div>
+                    <div class="bubble-option-label">C</div>
+                </div>
+                <div class="bubble-group">
+                    <div class="ljk-bubble ${currentJawaban === 'D' ? 'selected' : ''}" data-value="D" data-soal="${i}">
+                        <span class="ljk-bubble-label">D</span>
+                    </div>
+                    <div class="bubble-option-label">D</div>
+                </div>
+                <div class="bubble-group">
+                    <div class="ljk-bubble ${currentJawaban === 'E' ? 'selected' : ''}" data-value="E" data-soal="${i}">
+                        <span class="ljk-bubble-label">E</span>
+                    </div>
+                    <div class="bubble-option-label">E</div>
+                </div>
+            </div>
+        `;
+        
+        // Add click event to bubbles
+        const bubbles = row.querySelectorAll('.ljk-bubble');
+        bubbles.forEach(bubble => {
+            bubble.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                const soalNumber = parseInt(this.getAttribute('data-soal'));
                 
-                // Add click event to bubbles
-                const bubbles = row.querySelectorAll('.ljk-bubble');
-                bubbles.forEach(bubble => {
-                    bubble.addEventListener('click', function() {
-                        const value = this.getAttribute('data-value');
-                        const soalNumber = parseInt(this.getAttribute('data-soal'));
-                        
-                        // Update jawaban
-                        currentState.jawaban['s' + soalNumber] = value;
-                        
-                        // Update UI - hanya untuk bubble dalam row yang sama
-                        bubbles.forEach(b => b.classList.remove('selected'));
-                        this.classList.add('selected');
-                    });
-                });
+                // Update jawaban
+                currentState.jawaban['s' + soalNumber] = value;
                 
-                ljkRowsContainer.appendChild(row);
-            }
-        }
+                // Update UI
+                bubbles.forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+        
+        ljkRowsContainer.appendChild(row);
+    }
+    
+    // PERBAIKAN: Update info jumlah soal di UI
+    updateSoalInfo(jumlahSoal);
+}
 
-        function toggleSidebar() {
-            sidebar.classList.toggle('open');
-        }
+// FUNGSI BARU: Update info jumlah soal di UI
+function updateSoalInfo(jumlahSoal) {
+    const infoElement = document.querySelector('.ljk-instruction');
+    if (infoElement) {
+        infoElement.textContent = `Klik bulatan untuk memilih jawaban (${jumlahSoal} soal)`;
+    }
+    
+    // Update juga di tombol submit jika perlu
+    const submitBtn = document.querySelector('.btn-success');
+    if (submitBtn) {
+        const totalTerjawab = Object.keys(currentState.jawaban).length;
+        submitBtn.innerHTML = `<span>📤 Kirim Jawaban (${totalTerjawab}/${jumlahSoal})</span>`;
+    }
+}
+
+// PERBAIKAN: Fungsi toggleSidebar dengan handle FAB
+function toggleSidebar() {
+    const isOpening = !sidebar.classList.contains('open');
+    sidebar.classList.toggle('open');
+    
+    // Jika membuka sidebar, sembunyikan FAB sementara
+    const fab = document.querySelector('.fab');
+    if (fab) {
+        fab.style.opacity = isOpening ? '0.3' : '1';
+        fab.style.pointerEvents = isOpening ? 'none' : 'all';
+    }
+}
 
 async function submitJawaban() {
     const totalSoal = currentState.currentUjian.jumlah_soal;
@@ -1199,6 +1335,167 @@ async function submitJawaban() {
 
         // Prevent going back during exam
         history.pushState(null, null, window.location.href);
+		
+		
+// VARIABEL BARU UNTUK DRAGGABLE
+let fabDragState = {
+    isDragging: false,
+    startX: 0,
+    startY: 0,
+    initialX: 0,
+    initialY: 0
+};
+
+// FUNGSI BARU: Inisialisasi draggable FAB
+function initDraggableFab() {
+    const fab = document.querySelector('.fab');
+    const boundary = document.querySelector('.fab-boundary');
+    
+    // Jika boundary belum ada, buat elemen boundary
+    if (!boundary) {
+        const boundaryEl = document.createElement('div');
+        boundaryEl.className = 'fab-boundary';
+        document.body.appendChild(boundaryEl);
+    }
+    
+    // Event untuk desktop (mouse)
+    fab.addEventListener('mousedown', startDrag);
+    
+    // Event untuk mobile (touch)
+    fab.addEventListener('touchstart', startDrag, { passive: false });
+    
+    // Event global untuk drag
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('touchmove', drag, { passive: false });
+    
+    // Event global untuk stop drag
+    document.addEventListener('mouseup', stopDrag);
+    document.addEventListener('touchend', stopDrag);
+}
+
+// FUNGSI BARU: Start dragging
+function startDrag(e) {
+    e.preventDefault();
+    
+    const fab = document.querySelector('.fab');
+    fabDragState.isDragging = true;
+    fab.style.cursor = 'grabbing';
+    fab.classList.add('fab-dragging');
+    
+    // Get initial position
+    const rect = fab.getBoundingClientRect();
+    fabDragState.initialX = rect.left;
+    fabDragState.initialY = rect.top;
+    
+    // Get start coordinates
+    if (e.type === 'mousedown') {
+        fabDragState.startX = e.clientX;
+        fabDragState.startY = e.clientY;
+    } else if (e.type === 'touchstart') {
+        fabDragState.startX = e.touches[0].clientX;
+        fabDragState.startY = e.touches[0].clientY;
+    }
+}
+
+// FUNGSI BARU: During drag
+function drag(e) {
+    if (!fabDragState.isDragging) return;
+    e.preventDefault();
+    
+    const fab = document.querySelector('.fab');
+    let currentX, currentY;
+    
+    // Get current coordinates
+    if (e.type === 'mousemove') {
+        currentX = e.clientX;
+        currentY = e.clientY;
+    } else if (e.type === 'touchmove') {
+        currentX = e.touches[0].clientX;
+        currentY = e.touches[0].clientY;
+    }
+    
+    // Calculate new position
+    const deltaX = currentX - fabDragState.startX;
+    const deltaY = currentY - fabDragState.startY;
+    
+    const newX = fabDragState.initialX + deltaX;
+    const newY = fabDragState.initialY + deltaY;
+    
+    // Apply boundary constraints
+    const boundary = document.querySelector('.fab-boundary').getBoundingClientRect();
+    const fabRect = fab.getBoundingClientRect();
+    
+    const constrainedX = Math.max(boundary.left, Math.min(newX, boundary.right - fabRect.width));
+    const constrainedY = Math.max(boundary.top, Math.min(newY, boundary.bottom - fabRect.height));
+    
+    // Apply new position
+    fab.style.left = `${constrainedX}px`;
+    fab.style.top = `${constrainedY}px`;
+    fab.style.right = 'auto'; // Reset right positioning
+    fab.style.bottom = 'auto'; // Reset bottom positioning
+}
+
+// FUNGSI BARU: Stop dragging
+function stopDrag() {
+    if (!fabDragState.isDragging) return;
+    
+    const fab = document.querySelector('.fab');
+    fabDragState.isDragging = false;
+    fab.style.cursor = 'grab';
+    fab.classList.remove('fab-dragging');
+    
+    // Simpan posisi terakhir ke localStorage
+    saveFabPosition();
+}
+
+// FUNGSI BARU: Simpan posisi FAB
+function saveFabPosition() {
+    const fab = document.querySelector('.fab');
+    const rect = fab.getBoundingClientRect();
+    
+    const position = {
+        x: rect.left,
+        y: rect.top,
+        timestamp: Date.now()
+    };
+    
+    localStorage.setItem('cbt_fab_position', JSON.stringify(position));
+}
+
+// FUNGSI BARU: Load posisi FAB yang disimpan
+function loadFabPosition() {
+    const saved = localStorage.getItem('cbt_fab_position');
+    if (saved) {
+        try {
+            const position = JSON.parse(saved);
+            const fab = document.querySelector('.fab');
+            
+            // Cek jika posisi masih valid (dalam 7 hari)
+            const isRecent = Date.now() - position.timestamp < 7 * 24 * 60 * 60 * 1000;
+            
+            if (isRecent && position.x > 0 && position.y > 0) {
+                fab.style.left = `${position.x}px`;
+                fab.style.top = `${position.y}px`;
+                fab.style.right = 'auto';
+                fab.style.bottom = 'auto';
+            }
+        } catch (error) {
+            console.log('Error loading FAB position:', error);
+        }
+    }
+}
+
+// FUNGSI BARU: Reset posisi FAB ke default
+function resetFabPosition() {
+    const fab = document.querySelector('.fab');
+    fab.style.left = 'auto';
+    fab.style.top = 'auto';
+    fab.style.right = '20px';
+    fab.style.bottom = '20px';
+    
+    localStorage.removeItem('cbt_fab_position');
+}
+		
     </script>
 </body>
 </html>
