@@ -937,6 +937,48 @@
             }
         }
 
+// Tambahkan di frontend untuk format tanggal yang konsisten
+function formatDateForAPI(tanggal) {
+    if (!tanggal) return '';
+    const date = new Date(tanggal);
+    // Format: YYYY-MM-DD (ISO format)
+    return date.toISOString().split('T')[0];
+}
+
+// Update fungsi startUjian
+async function startUjian(soalId) {
+    showLoading();
+    
+    try {
+        const response = await callAPI('start_ujian', {
+            session_id: currentState.sessionId,
+            soal_id: soalId
+        });
+        
+        if (response.error) {
+            showMessage(response.error, 'error');
+            return;
+        }
+        
+        // Format tanggal sebelum disimpan
+        response.tanggal_ujian = formatDateForAPI(response.tanggal_ujian);
+        
+        currentState.currentUjian = response;
+        currentState.jawaban = {};
+        currentState.timeLeft = response.durasi * 60;
+        
+        showUjianScreen();
+        startTimer();
+        
+    } catch (error) {
+        showMessage('Gagal memulai ujian', 'error');
+        console.error('Start ujian error:', error);
+    } finally {
+        hideLoading();
+    }
+}
+
+	
 // PERBAIKAN: Fungsi showDashboard dengan reset FAB
 function showDashboard() {
     loginScreen.style.display = 'none';
@@ -1602,3 +1644,4 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 </body>
 </html>
+
