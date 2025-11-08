@@ -56,11 +56,66 @@
             text-align: center;
         }
 
-        .logo {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
+    .logo {
+    width: 120px; /* Lebih besar dari sebelumnya */
+    height: 120px;
+    margin: 0 auto 20px auto;
+    object-fit: cover;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.logo img {
+    width: 80%;
+    height: 80%;
+    object-fit: cover;
+}
+
+/* Logo placeholder jika gambar gagal load */
+.logo::before {
+    content: "📚";
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.logo:has(img)::before {
+    display: none;
+}
+
+/* Animation untuk logo */
+@keyframes logoFloat {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+}
+
+.logo {
+    animation: logoFloat 3s ease-in-out infinite;
+}
+
+/* Responsive logo */
+@media (max-width: 480px) {
+    .logo {
+        width: 100px;
+        height: 100px;
+        border-radius: 15px;
+        border-width: 3px;
+    }
+}
+
+@media (min-width: 768px) {
+    .logo {
+        width: 140px;
+        height: 140px;
+    }
+}
 
         .app-title {
             font-size: 1.5rem;
@@ -676,27 +731,32 @@
     <div class="app-container">
         <!-- Login Screen -->
         <div class="login-container" id="loginScreen">
-            <div class="login-card">
-                <div class="logo">📚</div>
-                <h1 class="app-title">CBT Online</h1>
-                <p class="app-subtitle">Sistem Ujian Sekolah Digital</p>
-                
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label class="form-label">Username</label>
-                        <input type="text" class="form-input" id="username" placeholder="Masukkan username" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Password</label>
-                        <input type="password" class="form-input" id="password" placeholder="Masukkan password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <span>Masuk</span>
-                        <span>🔑</span>
-                    </button>
-                </form>
-            </div>
+    <div class="login-card">
+        <!-- PERBAIKAN: Logo dengan gambar -->
+        <div class="logo">
+            <img src="https://lh3.google.com/u/0/d/1Xe6WNdx-_L0tRIM52U6QJqFpTkIfOGBQ" 
+                 alt="Logo Sekolah" 
+                 onerror="this.style.display='none'">
         </div>
+        <h1 class="app-title">CBT Online</h1>
+        <p class="app-subtitle">Sistem Ujian Sekolah Digital</p>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-input" id="username" placeholder="Masukkan username" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-input" id="password" placeholder="Masukkan password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <span>Masuk</span>
+                <span>🔑</span>
+            </button>
+        </form>
+    </div>
+</div>
 
         <!-- Dashboard -->
         <div class="dashboard" id="dashboard" style="display: none;">
@@ -1495,7 +1555,50 @@ function resetFabPosition() {
     
     localStorage.removeItem('cbt_fab_position');
 }
-		
+	
+// FUNGSI BARU: Handle logo loading dan fallback
+function initLogo() {
+    const logoImg = document.querySelector('.logo img');
+    const logoContainer = document.querySelector('.logo');
+    
+    if (logoImg) {
+        // Event ketika gambar berhasil load
+        logoImg.addEventListener('load', function() {
+            console.log('Logo berhasil dimuat');
+            logoContainer.style.background = 'transparent';
+        });
+        
+        // Event ketika gambar gagal load
+        logoImg.addEventListener('error', function() {
+            console.log('Logo gagal dimuat, menggunakan fallback');
+            this.style.display = 'none';
+            // Fallback ke emoji atau teks
+            logoContainer.innerHTML = '🏫';
+            logoContainer.style.fontSize = '3rem';
+            logoContainer.style.display = 'flex';
+            logoContainer.style.alignItems = 'center';
+            logoContainer.style.justifyContent = 'center';
+        });
+        
+        // Preload logo
+        logoImg.src = "https://lh3.google.com/u/0/d/1Xe6WNdx-_L0tRIM52U6QJqFpTkIfOGBQ";
+    }
+}
+
+// Panggil initLogo ketika halaman dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    checkExistingSession();
+    initLogo(); // PERBAIKAN: Inisialisasi logo
+    
+    // Inisialisasi FAB ketika halaman dimuat
+    setTimeout(() => {
+        if (document.querySelector('.fab')) {
+            initDraggableFab();
+            loadFabPosition();
+        }
+    }, 500);
+});
+	
     </script>
 </body>
 </html>
