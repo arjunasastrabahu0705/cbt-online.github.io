@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CBT Online - Ujian Sekolah</title>
     <style>
-       * {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -56,66 +56,11 @@
             text-align: center;
         }
 
-    .logo {
-    width: 120px; /* Lebih besar dari sebelumnya */
-    height: 120px;
-    margin: 0 auto 20px auto;
-    object-fit: cover;
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.logo img {
-    width: 80%;
-    height: 80%;
-    object-fit: cover;
-}
-
-/* Logo placeholder jika gambar gagal load */
-.logo::before {
-    content: "📚";
-    font-size: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-}
-
-.logo:has(img)::before {
-    display: none;
-}
-
-/* Animation untuk logo */
-@keyframes logoFloat {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-5px); }
-    100% { transform: translateY(0px); }
-}
-
-.logo {
-    animation: logoFloat 3s ease-in-out infinite;
-}
-
-/* Responsive logo */
-@media (max-width: 480px) {
-    .logo {
-        width: 100px;
-        height: 100px;
-        border-radius: 15px;
-        border-width: 3px;
-    }
-}
-
-@media (min-width: 768px) {
-    .logo {
-        width: 140px;
-        height: 140px;
-    }
-}
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
 
         .app-title {
             font-size: 1.5rem;
@@ -349,67 +294,23 @@
 
         /* Floating Action Button */
         .fab {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    width: 60px;
-    height: 60px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: grab;
-    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    user-select: none;
-    touch-action: none; /* Penting untuk mobile */
-}
-
-.fab:active {
-    cursor: grabbing;
-    transform: scale(0.95);
-    box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4);
-}
-
-.fab:hover {
-    transform: scale(1.05);
-    box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4);
-}
-
-/* Safe areas untuk mencegah tombol keluar layar */
-.fab-boundary {
-    position: fixed;
-    top: 70px; /* Beri jarak dari header */
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-    pointer-events: none;
-    z-index: 999;
-}
-
-/* Animation untuk feedback drag */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-.fab-dragging {
-    animation: pulse 0.5s ease-in-out;
-}
-
-/* Style untuk tablet/desktop */
-@media (min-width: 768px) {
-    .fab-boundary {
-        left: calc(50% - 200px + 10px); /* Sesuai dengan container app */
-        right: calc(50% - 200px + 10px);
-    }
-}
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
         /* Sidebar Jawaban */
         .sidebar {
@@ -477,41 +378,12 @@
 
         /* STYLE LJK YANG BARU - SESUAI PERMINTAAN */
         .ljk-container {
-    background: white;
-    border: 2px solid #1f2937;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
-    max-height: 60vh;
-    overflow-y: auto;
-	}
-
-	/* PERBAIKAN: Grid yang dinamis berdasarkan jumlah soal */
-	#ljkRowsContainer {
-    display: grid;
-    gap: 8px;
-    margin-bottom: 15px;
-    transition: grid-template-columns 0.3s ease;
-	}
-
-	/* Untuk 20-25 soal: 5 kolom */
-	#ljkRowsContainer {
-    grid-template-columns: repeat(5, 1fr);
-	}
-
-	/* Untuk 26-36 soal: 6 kolom */
-	@media (min-width: 768px) {
-    #ljkRowsContainer.ljk-6-col {
-        grid-template-columns: repeat(6, 1fr);
-    }
-	}
-
-	/* Untuk 37+ soal: 7 kolom */
-	@media (min-width: 1024px) {
-    #ljkRowsContainer.ljk-7-col {
-        grid-template-columns: repeat(7, 1fr);
-    }
-	}
+            background: white;
+            border: 2px solid #1f2937;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
 
         .ljk-header {
             text-align: center;
@@ -561,18 +433,18 @@
             gap: 5px;
         }
 
-    .ljk-bubble {
-    width: 16px;
-    height: 16px;
-    border: 2px solid #374151;
-    border-radius: 50%;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-	}
+        .ljk-bubble {
+            width: 32px; /* 4mm equivalent */
+            height: 32px; /* 4mm equivalent */
+            border: 2px solid #374151;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
         .ljk-bubble.selected {
             background: #1f2937;
@@ -580,7 +452,7 @@
         }
 
         .ljk-bubble-label {
-            font-size: 0.6rem;
+            font-size: 1.0rem;
             font-weight: bold;
             color: white;
             display: none;
@@ -591,33 +463,30 @@
         }
 
         .ljk-option-label {
-            font-size: 0.7rem;
-            font-weight: 600;
+            font-size: 1.2rem;
+            font-weight: bold;
             color: #374151;
             margin-top: 2px;
         }
 
         .ljk-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    padding: 5px;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    background: #f9fafb;
-	}
-
-	.soal-number {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #374151;
-    min-width: 20px;
-    text-align: center;
-	}
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 5px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
 
         .ljk-row:last-child {
             border-bottom: none;
+        }
+
+        .soal-number {
+            width: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #374151;
+            text-align: center;
         }
 
         .bubbles-container {
@@ -725,38 +594,67 @@
                 width: 400px;
             }
         }
+		
+		/* Tambahkan di CSS */
+		.btn:disabled {
+		background: #d1d5db !important;
+		color: #6b7280 !important;
+		cursor: not-allowed !important;
+		opacity: 0.6;
+		transform: none !important;
+		box-shadow: none !important;
+		}
+
+		.ujian-status.status-selesai {
+		background: #dcfce7;
+		color: #166534;
+		padding: 5px 12px;
+		border-radius: 20px;
+		font-size: 0.8rem;
+		font-weight: 600;
+		}
+		
+		/* Style untuk form login yang lebih baik */
+		.form-input:invalid {
+		border-color: #ef4444;
+		}
+
+		.form-input:valid {
+		border-color: #10b981;
+		}
+
+		/* Animation untuk clear form */
+		.form-input {
+		transition: all 0.3s ease;
+		}
+		
     </style>
 </head>
 <body>
     <div class="app-container">
         <!-- Login Screen -->
         <div class="login-container" id="loginScreen">
-    <div class="login-card">
-        <!-- PERBAIKAN: Logo dengan gambar -->
-        <div class="logo">
-            <img src="https://lh3.google.com/u/0/d/1Xe6WNdx-_L0tRIM52U6QJqFpTkIfOGBQ" 
-                 alt="Logo Sekolah" 
-                 onerror="this.style.display='none'">
+            <div class="login-card">
+                <div class="logo">📚</div>
+                <h1 class="app-title">CBT Online</h1>
+                <p class="app-subtitle">Sistem Ujian Sekolah Digital</p>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-input" id="username" placeholder="Masukkan username" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" id="password" placeholder="Masukkan password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span>Masuk</span>
+                        <span>🔑</span>
+                    </button>
+                </form>
+            </div>
         </div>
-        <h1 class="app-title">CBT Online</h1>
-        <p class="app-subtitle">Sistem Ujian Sekolah Digital</p>
-        
-        <form id="loginForm">
-            <div class="form-group">
-                <label class="form-label">Username</label>
-                <input type="text" class="form-input" id="username" placeholder="Masukkan username" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" class="form-input" id="password" placeholder="Masukkan password" required>
-            </div>
-            <button type="submit" class="btn btn-primary">
-                <span>Masuk</span>
-                <span>🔑</span>
-            </button>
-        </form>
-    </div>
-</div>
 
         <!-- Dashboard -->
         <div class="dashboard" id="dashboard" style="display: none;">
@@ -876,144 +774,108 @@
 
         // Event Listeners
         document.getElementById('loginForm').addEventListener('submit', handleLogin);
-        
-		// Event listener untuk halaman loaded
-	document.addEventListener('DOMContentLoaded', function() {
-    checkExistingSession();
+        document.addEventListener('DOMContentLoaded', function() {
+			// Clear form login saat page pertama kali load
+			document.getElementById('username').value = '';
+			document.getElementById('password').value = '';
     
-    // Inisialisasi FAB ketika halaman dimuat
-    setTimeout(() => {
-        if (document.querySelector('.fab')) {
-            initDraggableFab();
-            loadFabPosition();
-        }
-    }, 500);
-	});
-
+			// Focus ke username field
+			document.getElementById('username').focus();
+    
+			// Check existing session
+			checkExistingSession();
+		});
+		
+		
         // Fungsi utama
-        async function handleLogin(e) {
-            e.preventDefault();
+        // Tambahkan juga di handleLogin untuk clear jika login gagal
+		async function handleLogin(e) {
+		e.preventDefault();
+    
+		const username = document.getElementById('username').value;
+		const password = document.getElementById('password').value;
+    
+			showLoading();
+    
+			try {
+				const response = await callAPI('login', {
+				username: username,
+				password: password
+				});
+        
+					if (response.success) {
+					currentState.sessionId = response.session_id;
+					currentState.userData = response.user_data;
             
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+				// Simpan session di localStorage
+				localStorage.setItem('cbt_session', response.session_id);
+				localStorage.setItem('cbt_user', JSON.stringify(response.user_data));
             
-            showLoading();
-            
-            try {
-                const response = await callAPI('login', {
-                    username: username,
-                    password: password
-                });
-                
-                if (response.success) {
-                    currentState.sessionId = response.session_id;
-                    currentState.userData = response.user_data;
-                    
-                    // Simpan session di localStorage
-                    localStorage.setItem('cbt_session', response.session_id);
-                    localStorage.setItem('cbt_user', JSON.stringify(response.user_data));
-                    
-                    showDashboard();
-                    showMessage('Login berhasil!', 'success');
-                } else {
-                    showMessage(response.error || 'Login gagal', 'error');
-                }
-            } catch (error) {
-                showMessage('Terjadi kesalahan saat login', 'error');
-                console.error('Login error:', error);
-            } finally {
-                hideLoading();
-            }
-        }
+				showDashboard();
+				showMessage('Login berhasil!', 'success');
+					} else {
+				// JIKA LOGIN GAGAL, CLEAR PASSWORD SAJA
+				document.getElementById('password').value = '';
+				document.getElementById('password').focus();
+				showMessage(response.error || 'Login gagal', 'error');
+				}
+					} catch (error) {
+				// JIKA ERROR, CLEAR PASSWORD
+				document.getElementById('password').value = '';
+				showMessage('Terjadi kesalahan saat login', 'error');
+				console.error('Login error:', error);
+					} finally {
+					hideLoading();
+					}
+		}
 
         function checkExistingSession() {
-            const savedSession = localStorage.getItem('cbt_session');
-            const savedUser = localStorage.getItem('cbt_user');
-            
-            if (savedSession && savedUser) {
-                currentState.sessionId = savedSession;
-                currentState.userData = JSON.parse(savedUser);
-                showDashboard();
-            }
-        }
+				const savedSession = localStorage.getItem('cbt_session');
+				const savedUser = localStorage.getItem('cbt_user');
+    
+			if (savedSession && savedUser) {
+				currentState.sessionId = savedSession;
+				currentState.userData = JSON.parse(savedUser);
+        
+				// Validasi session
+				validateSession();
+			} else {
+				// Pastikan form login bersih
+				document.getElementById('username').value = '';
+				document.getElementById('password').value = '';
+				}
+		}
 
-// Tambahkan di frontend untuk format tanggal yang konsisten
-function formatDateForAPI(tanggal) {
-    if (!tanggal) return '';
-    const date = new Date(tanggal);
-    // Format: YYYY-MM-DD (ISO format)
-    return date.toISOString().split('T')[0];
-}
+        async function showDashboard() {
+		// SEMBUNYIKAN SEMUA LAYAR LAIN
+		loginScreen.style.display = 'none';
+		ujianScreen.style.display = 'none';
+		const sidebar = document.getElementById('sidebar');
+		sidebar.classList.remove('open');
+    
+		// TAMPILKAN DASHBOARD
+		dashboard.style.display = 'block';
+    
+		// UPDATE USER INFO
+		document.getElementById('userName').textContent = currentState.userData.nama_lengkap;
+		document.getElementById('userClass').textContent = currentState.userData.kelas;
+    
+		// LOAD DAFTAR UJIAN DENGAN STATUS TERBARU
+			await loadUjianAktif();
+		}
 
-// Update fungsi startUjian
-async function startUjian(soalId) {
-    showLoading();
+        async function loadUjianAktif() {
+			showLoading();
     
-    try {
-        const response = await callAPI('start_ujian', {
-            session_id: currentState.sessionId,
-            soal_id: soalId
-        });
-        
-        if (response.error) {
-            showMessage(response.error, 'error');
-            return;
-        }
-        
-        // Format tanggal sebelum disimpan
-        response.tanggal_ujian = formatDateForAPI(response.tanggal_ujian);
-        
-        currentState.currentUjian = response;
-        currentState.jawaban = {};
-        currentState.timeLeft = response.durasi * 60;
-        
-        showUjianScreen();
-        startTimer();
-        
-    } catch (error) {
-        showMessage('Gagal memulai ujian', 'error');
-        console.error('Start ujian error:', error);
-    } finally {
-        hideLoading();
-    }
-}
-
-	
-// PERBAIKAN: Fungsi showDashboard dengan reset FAB
-function showDashboard() {
-    loginScreen.style.display = 'none';
-    ujianScreen.style.display = 'none';
-    dashboard.style.display = 'block';
-    
-    // Pastikan sidebar tertutup
-    sidebar.classList.remove('open');
-    
-    // Reset FAB position ketika keluar dari ujian
-    resetFabPosition();
-    
-    // Update user info
-    document.getElementById('userName').textContent = currentState.userData.nama_lengkap;
-    document.getElementById('userClass').textContent = currentState.userData.kelas;
-    
-    // Load daftar ujian
-    loadUjianAktif();
-}
-
-// PERBAIKAN: Fungsi loadUjianAktif dengan debug info
-async function loadUjianAktif() {
-    showLoading();
-    
-    try {
-        const response = await callAPI('get_ujian_aktif', {
+			try {
+			const response = await callAPI('get_ujian_aktif', {
             session_id: currentState.sessionId
-        });
-        
-        console.log('Data ujian aktif:', response.ujian_aktif);
+			});
         
         const ujianList = document.getElementById('ujianList');
         ujianList.innerHTML = '';
         
-        if (response.ujian_aktif && response.ujian_aktif.length > 0) {
+			if (response.ujian_aktif && response.ujian_aktif.length > 0) {
             response.ujian_aktif.forEach(ujian => {
                 const ujianCard = document.createElement('div');
                 ujianCard.className = 'ujian-card';
@@ -1021,18 +883,22 @@ async function loadUjianAktif() {
                 let statusHtml = '';
                 let buttonHtml = '';
                 
-                console.log(`Soal ${ujian.soal_id}: sudah_dikerjakan=${ujian.sudah_dikerjakan}, bisa_dikerjakan=${ujian.bisa_dikerjakan}`);
-                
-                // PERBAIKAN: Logika status yang lebih akurat
+                // CEK STATUS UJIAN
                 if (ujian.sudah_dikerjakan) {
                     statusHtml = `<span class="ujian-status status-selesai">✓ Selesai</span>`;
-                    buttonHtml = `<button class="btn" disabled>Sudah Dikerjakan</button>`;
+                    buttonHtml = `<button class="btn" disabled style="background: #d1d5db; color: #6b7280; cursor: not-allowed;">
+                        <span>✓ Sudah Dikerjakan</span>
+                    </button>`;
                 } else if (ujian.bisa_dikerjakan) {
                     statusHtml = `<span class="ujian-status status-aktif">Aktif</span>`;
-                    buttonHtml = `<button class="btn btn-primary" onclick="startUjian('${ujian.soal_id}')">Mulai Ujian</button>`;
+                    buttonHtml = `<button class="btn btn-primary" onclick="startUjian('${ujian.soal_id}')">
+                        <span>Mulai Ujian</span>
+                    </button>`;
                 } else {
                     statusHtml = `<span class="ujian-status status-tunggu">Menunggu</span>`;
-                    buttonHtml = `<button class="btn" disabled>Belum Waktunya</button>`;
+                    buttonHtml = `<button class="btn" disabled style="background: #f3f4f6; color: #9ca3af; cursor: not-allowed;">
+                        <span>Belum Waktunya</span>
+                    </button>`;
                 }
                 
                 ujianCard.innerHTML = `
@@ -1041,10 +907,6 @@ async function loadUjianAktif() {
                             <div class="ujian-title">${ujian.mata_pelajaran}</div>
                             <div class="ujian-meta">${ujian.pengampu} • ${ujian.jumlah_soal} soal • ${ujian.durasi} menit</div>
                             <div class="ujian-meta">Tanggal: ${formatTanggal(ujian.tanggal_ujian)}</div>
-                            <div class="ujian-meta" style="font-size: 0.7rem; color: #666;">
-                                Status: ${ujian.sudah_dikerjakan ? 'SELESAI' : 'BELUM'} | 
-                                ID: ${ujian.soal_id}
-                            </div>
                         </div>
                         ${statusHtml}
                     </div>
@@ -1052,97 +914,65 @@ async function loadUjianAktif() {
                 `;
                 
                 ujianList.appendChild(ujianCard);
-            });
-        } else {
-            ujianList.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 40px;">Tidak ada ujian aktif</p>';
-        }
-    } catch (error) {
-        showMessage('Gagal memuat daftar ujian', 'error');
-        console.error('Load ujian error:', error);
-    } finally {
-        hideLoading();
-    }
-}
+				});
+					} else {
+					ujianList.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 40px;">Tidak ada ujian aktif</p>';
+					}
+					} catch (error) {
+						showMessage('Gagal memuat daftar ujian', 'error');
+						console.error('Load ujian error:', error);
+					} finally {
+					hideLoading();
+					}
+			}
 
-// PERBAIKAN: Fungsi startUjian dengan validasi tambahan
-async function startUjian(soalId) {
-    // Cek dulu status ujian sebelum memulai
-    showLoading();
-    
-    try {
-        const response = await callAPI('get_ujian_aktif', {
-            session_id: currentState.sessionId
-        });
-        
-        const ujian = response.ujian_aktif.find(u => u.soal_id === soalId);
-        
-        if (!ujian) {
-            showMessage('Ujian tidak ditemukan', 'error');
-            return;
+        async function startUjian(soalId) {
+            showLoading();
+            
+            try {
+                const response = await callAPI('start_ujian', {
+                    session_id: currentState.sessionId,
+                    soal_id: soalId
+                });
+                
+                if (response.error) {
+                    showMessage(response.error, 'error');
+                    return;
+                }
+                
+                currentState.currentUjian = response;
+                currentState.jawaban = {};
+                currentState.timeLeft = response.durasi * 60;
+                
+                showUjianScreen();
+                startTimer();
+                
+            } catch (error) {
+                showMessage('Gagal memulai ujian', 'error');
+                console.error('Start ujian error:', error);
+            } finally {
+                hideLoading();
+            }
         }
-        
-        if (ujian.sudah_dikerjakan) {
-            showMessage('Anda sudah mengerjakan ujian ini!', 'warning');
-            await loadUjianAktif(); // Refresh list
-            return;
-        }
-        
-        if (!ujian.bisa_dikerjakan) {
-            showMessage('Ujian belum bisa dimulai', 'warning');
-            return;
-        }
-        
-        // Lanjutkan start ujian
-        const startResponse = await callAPI('start_ujian', {
-            session_id: currentState.sessionId,
-            soal_id: soalId
-        });
-        
-        if (startResponse.error) {
-            showMessage(startResponse.error, 'error');
-            return;
-        }
-        
-        currentState.currentUjian = startResponse;
-        currentState.jawaban = {};
-        currentState.timeLeft = startResponse.durasi * 60;
-        
-        showUjianScreen();
-        startTimer();
-        
-    } catch (error) {
-        showMessage('Gagal memulai ujian', 'error');
-        console.error('Start ujian error:', error);
-    } finally {
-        hideLoading();
-    }
-}
 
-// PERBAIKAN: Fungsi showUjianScreen dengan inisialisasi FAB
-function showUjianScreen() {
-    dashboard.style.display = 'none';
-    ujianScreen.style.display = 'block';
-    
-    // Update UI
-    document.getElementById('ujianTitle').textContent = currentState.currentUjian.mata_pelajaran;
-    document.getElementById('pdfViewer').src = currentState.currentUjian.link_soal;
-    
-    // Update biodata sidebar
-    document.getElementById('bioNama').textContent = currentState.userData.nama_lengkap;
-    document.getElementById('bioKelas').textContent = currentState.userData.kelas;
-    document.getElementById('bioMapel').textContent = currentState.currentUjian.mata_pelajaran;
-    document.getElementById('bioPengampu').textContent = currentState.currentUjian.pengampu;
-    document.getElementById('bioTanggal').textContent = formatTanggal(currentState.currentUjian.tanggal_ujian);
-    
-    // Inisialisasi FAB draggable
-    setTimeout(() => {
-        initDraggableFab();
-        loadFabPosition();
-    }, 100);
-    
-    // Generate LJK
-    generateLJK();
-}
+        function showUjianScreen() {
+            dashboard.style.display = 'none';
+            ujianScreen.style.display = 'block';
+            
+            // Update UI
+            document.getElementById('ujianTitle').textContent = currentState.currentUjian.mata_pelajaran;
+            document.getElementById('pdfViewer').src = currentState.currentUjian.link_soal;
+            
+            // Update biodata sidebar
+            document.getElementById('bioNama').textContent = currentState.userData.nama_lengkap;
+            document.getElementById('bioKelas').textContent = currentState.userData.kelas;
+            document.getElementById('bioMapel').textContent = currentState.currentUjian.mata_pelajaran;
+            document.getElementById('bioPengampu').textContent = currentState.currentUjian.pengampu;
+            document.getElementById('bioTanggal').textContent = formatTanggal(currentState.currentUjian.tanggal_ujian);
+            
+            // Generate LJK
+            generateLJK();
+        }
 
         function startTimer() {
             updateTimerDisplay();
@@ -1175,131 +1005,93 @@ function showUjianScreen() {
             }
         }
 
-// PERBAIKAN: Fungsi generateLJK dengan jumlah soal dinamis
-function generateLJK() {
-    ljkRowsContainer.innerHTML = '';
-    
-    // PERBAIKAN: Ambil jumlah_soal dari currentUjian (bisa 20, 30, 40, dll)
-    const jumlahSoal = currentState.currentUjian.jumlah_soal;
-    console.log(`Generating LJK untuk ${jumlahSoal} soal`);
-    
-    // PERBAIKAN: Hitung jumlah kolom grid berdasarkan jumlah soal
-    const gridColumns = jumlahSoal <= 25 ? 5 : 
-                       jumlahSoal <= 36 ? 6 : 7;
-    
-    // Apply grid columns ke container
-    ljkRowsContainer.style.gridTemplateColumns = `repeat(${gridColumns}, 1fr)`;
-    
-    for (let i = 1; i <= jumlahSoal; i++) {
-        const row = document.createElement('div');
-        row.className = 'ljk-row';
-        
-        const currentJawaban = currentState.jawaban['s' + i];
-        
-        row.innerHTML = `
-            <div class="soal-number">${i}</div>
-            <div class="bubbles-container">
-                <div class="bubble-group">
-                    <div class="ljk-bubble ${currentJawaban === 'A' ? 'selected' : ''}" data-value="A" data-soal="${i}">
-                        <span class="ljk-bubble-label">A</span>
-                    </div>
-                    <div class="bubble-option-label">A</div>
-                </div>
-                <div class="bubble-group">
-                    <div class="ljk-bubble ${currentJawaban === 'B' ? 'selected' : ''}" data-value="B" data-soal="${i}">
-                        <span class="ljk-bubble-label">B</span>
-                    </div>
-                    <div class="bubble-option-label">B</div>
-                </div>
-                <div class="bubble-group">
-                    <div class="ljk-bubble ${currentJawaban === 'C' ? 'selected' : ''}" data-value="C" data-soal="${i}">
-                        <span class="ljk-bubble-label">C</span>
-                    </div>
-                    <div class="bubble-option-label">C</div>
-                </div>
-                <div class="bubble-group">
-                    <div class="ljk-bubble ${currentJawaban === 'D' ? 'selected' : ''}" data-value="D" data-soal="${i}">
-                        <span class="ljk-bubble-label">D</span>
-                    </div>
-                    <div class="bubble-option-label">D</div>
-                </div>
-                <div class="bubble-group">
-                    <div class="ljk-bubble ${currentJawaban === 'E' ? 'selected' : ''}" data-value="E" data-soal="${i}">
-                        <span class="ljk-bubble-label">E</span>
-                    </div>
-                    <div class="bubble-option-label">E</div>
-                </div>
-            </div>
-        `;
-        
-        // Add click event to bubbles
-        const bubbles = row.querySelectorAll('.ljk-bubble');
-        bubbles.forEach(bubble => {
-            bubble.addEventListener('click', function() {
-                const value = this.getAttribute('data-value');
-                const soalNumber = parseInt(this.getAttribute('data-soal'));
+        function generateLJK() {
+            ljkRowsContainer.innerHTML = '';
+            const jumlahSoal = currentState.currentUjian.jumlah_soal;
+            
+            for (let i = 1; i <= jumlahSoal; i++) {
+                const row = document.createElement('div');
+                row.className = 'ljk-row';
                 
-                // Update jawaban
-                currentState.jawaban['s' + soalNumber] = value;
+                const currentJawaban = currentState.jawaban['s' + i];
                 
-                // Update UI
-                bubbles.forEach(b => b.classList.remove('selected'));
-                this.classList.add('selected');
-            });
-        });
-        
-        ljkRowsContainer.appendChild(row);
-    }
-    
-    // PERBAIKAN: Update info jumlah soal di UI
-    updateSoalInfo(jumlahSoal);
-}
+                row.innerHTML = `
+                    <div class="soal-number">${i}</div>
+                    <div class="bubbles-container">
+                        <div class="bubble-group">
+                            <div class="ljk-bubble ${currentJawaban === 'A' ? 'selected' : ''}" data-value="A" data-soal="${i}">
+                                <span class="ljk-bubble-label">A</span>
+                            </div>
+                            <div class="bubble-option-label">A</div>
+                        </div>
+                        <div class="bubble-group">
+                            <div class="ljk-bubble ${currentJawaban === 'B' ? 'selected' : ''}" data-value="B" data-soal="${i}">
+                                <span class="ljk-bubble-label">B</span>
+                            </div>
+                            <div class="bubble-option-label">B</div>
+                        </div>
+                        <div class="bubble-group">
+                            <div class="ljk-bubble ${currentJawaban === 'C' ? 'selected' : ''}" data-value="C" data-soal="${i}">
+                                <span class="ljk-bubble-label">C</span>
+                            </div>
+                            <div class="bubble-option-label">C</div>
+                        </div>
+                        <div class="bubble-group">
+                            <div class="ljk-bubble ${currentJawaban === 'D' ? 'selected' : ''}" data-value="D" data-soal="${i}">
+                                <span class="ljk-bubble-label">D</span>
+                            </div>
+                            <div class="bubble-option-label">D</div>
+                        </div>
+                        <div class="bubble-group">
+                            <div class="ljk-bubble ${currentJawaban === 'E' ? 'selected' : ''}" data-value="E" data-soal="${i}">
+                                <span class="ljk-bubble-label">E</span>
+                            </div>
+                            <div class="bubble-option-label">E</div>
+                        </div>
+                    </div>
+                `;
+                
+                // Add click event to bubbles
+                const bubbles = row.querySelectorAll('.ljk-bubble');
+                bubbles.forEach(bubble => {
+                    bubble.addEventListener('click', function() {
+                        const value = this.getAttribute('data-value');
+                        const soalNumber = parseInt(this.getAttribute('data-soal'));
+                        
+                        // Update jawaban
+                        currentState.jawaban['s' + soalNumber] = value;
+                        
+                        // Update UI - hanya untuk bubble dalam row yang sama
+                        bubbles.forEach(b => b.classList.remove('selected'));
+                        this.classList.add('selected');
+                    });
+                });
+                
+                ljkRowsContainer.appendChild(row);
+            }
+        }
 
-// FUNGSI BARU: Update info jumlah soal di UI
-function updateSoalInfo(jumlahSoal) {
-    const infoElement = document.querySelector('.ljk-instruction');
-    if (infoElement) {
-        infoElement.textContent = `Klik bulatan untuk memilih jawaban (${jumlahSoal} soal)`;
-    }
-    
-    // Update juga di tombol submit jika perlu
-    const submitBtn = document.querySelector('.btn-success');
-    if (submitBtn) {
-        const totalTerjawab = Object.keys(currentState.jawaban).length;
-        submitBtn.innerHTML = `<span>📤 Kirim Jawaban (${totalTerjawab}/${jumlahSoal})</span>`;
-    }
-}
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+        }
 
-// PERBAIKAN: Fungsi toggleSidebar dengan handle FAB
-function toggleSidebar() {
-    const isOpening = !sidebar.classList.contains('open');
-    sidebar.classList.toggle('open');
+        async function submitJawaban() {
+		const totalSoal = currentState.currentUjian.jumlah_soal;
+		const totalTerjawab = Object.keys(currentState.jawaban).length;
     
-    // Jika membuka sidebar, sembunyikan FAB sementara
-    const fab = document.querySelector('.fab');
-    if (fab) {
-        fab.style.opacity = isOpening ? '0.3' : '1';
-        fab.style.pointerEvents = isOpening ? 'none' : 'all';
-    }
-}
-
-async function submitJawaban() {
-    const totalSoal = currentState.currentUjian.jumlah_soal;
-    const totalTerjawab = Object.keys(currentState.jawaban).length;
-    
-    if (totalTerjawab === 0) {
+		if (totalTerjawab === 0) {
         if (!confirm('Anda belum menjawab soal apapun. Yakin ingin submit?')) {
             return;
         }
-    } else {
+		} else {
         if (!confirm(`Anda telah menjawab ${totalTerjawab} dari ${totalSoal} soal. Yakin ingin mengirim jawaban?`)) {
             return;
         }
-    }
+		}
     
-    showLoading();
+		showLoading();
     
-    try {
+		try {
         console.log('Mengirim jawaban:', currentState.jawaban);
         
         const response = await callAPI('submit_jawaban', {
@@ -1313,71 +1105,84 @@ async function submitJawaban() {
         if (response.success) {
             showMessage(`✅ Jawaban berhasil dikirim dan tersimpan!\\nScore: ${response.score}\\nBenar: ${response.total_benar}/${totalSoal}`, 'success');
             
-            // PERBAIKAN 1: Clear timer
+            // 1. HENTIKAN TIMER
             if (currentState.timer) {
                 clearInterval(currentState.timer);
                 currentState.timer = null;
             }
             
-            // PERBAIKAN 2: Tutup sidebar jika terbuka
+            // 2. TUTUP SIDEBAR
+            const sidebar = document.getElementById('sidebar');
             sidebar.classList.remove('open');
             
-            // PERBAIKAN 3: Clear state ujian
+            // 3. RESET STATE UJIAN
             currentState.currentUjian = null;
             currentState.jawaban = {};
             currentState.timeLeft = 0;
             
-            // PERBAIKAN 4: Refresh daftar ujian untuk update status
-            await loadUjianAktif();
+            // 4. TANDai UJIAN SUDAH DIKERJAKAN DI LOCALSTORAGE
+            const savedUser = JSON.parse(localStorage.getItem('cbt_user') || '{}');
+            if (!savedUser.ujian_selesai) {
+                savedUser.ujian_selesai = [];
+            }
+            savedUser.ujian_selesai.push(response.soal_id || currentState.currentUjian?.soal_id);
+            localStorage.setItem('cbt_user', JSON.stringify(savedUser));
             
-            // PERBAIKAN 5: Langsung kembali ke dashboard tanpa delay
-            showDashboard();
+            // 5. KEMBALI KE DASHBOARD SETELAH 2 DETIK
+            setTimeout(() => {
+                showDashboard();
+            }, 2000);
             
-        } else {
+			} else {
             showMessage(`❌ Gagal mengirim jawaban: ${response.error}`, 'error');
-        }
-    } catch (error) {
-        console.error('Submit error:', error);
-        showMessage('❌ Terjadi kesalahan saat mengirim jawaban', 'error');
-    } finally {
-        hideLoading();
-    }
-}
+			}
+			} catch (error) {
+			console.error('Submit error:', error);
+			showMessage('❌ Terjadi kesalahan saat mengirim jawaban', 'error');
+			} finally {
+			hideLoading();
+			}
+		}
 
         async function logout() {
-            try {
-                await callAPI('logout', {
-                    session_id: currentState.sessionId
-                });
-            } catch (error) {
-                // Ignore errors on logout
-            }
-            
-            // Clear state
-            currentState = {
-                sessionId: null,
-                userData: null,
-                currentUjian: null,
-                jawaban: {},
-                timer: null,
-                timeLeft: 0
-            };
-            
-            // Clear localStorage
-            localStorage.removeItem('cbt_session');
-            localStorage.removeItem('cbt_user');
-            
-            // Clear form login
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-            
-            // Show login screen
-            loginScreen.style.display = 'flex';
-            dashboard.style.display = 'none';
-            ujianScreen.style.display = 'none';
-            
-            showMessage('Anda telah logout', 'success');
-        }
+		try {
+        await callAPI('logout', {
+            session_id: currentState.sessionId
+        });
+		} catch (error) {
+        // Ignore errors on logout
+		}
+    
+		// RESET SEMUA STATE
+		currentState = {
+        sessionId: null,
+        userData: null,
+        currentUjian: null,
+        jawaban: {},
+        timer: null,
+        timeLeft: 0
+		};
+    
+		// CLEAR LOCALSTORAGE
+		localStorage.removeItem('cbt_session');
+		localStorage.removeItem('cbt_user');
+    
+		// CLEAR FORM LOGIN
+		document.getElementById('username').value = '';
+		document.getElementById('password').value = '';
+    
+		// FOCUS KE USERNAME FIELD
+		document.getElementById('username').focus();
+    
+		// KEMBALI KE LOGIN
+		loginScreen.style.display = 'flex';
+		dashboard.style.display = 'none';
+		ujianScreen.style.display = 'none';
+		const sidebar = document.getElementById('sidebar');
+		sidebar.classList.remove('open');
+    
+		console.log('✅ Logout berhasil, form login dibersihkan');
+		}
 
         // Utility functions
         async function callAPI(action, params) {
@@ -1438,210 +1243,26 @@ async function submitJawaban() {
         // Prevent going back during exam
         history.pushState(null, null, window.location.href);
 		
+		function testLogoutClearForm() {
+				console.log('=== TEST LOGOUT CLEAR FORM ===');
+    
+			// Isi form dulu
+			document.getElementById('username').value = 'testuser';
+			document.getElementById('password').value = 'testpass';
+    
+			console.log('Before logout - Username:', document.getElementById('username').value);
+			console.log('Before logout - Password:', document.getElementById('password').value);
+    
+			// Simulasi logout
+			logout();
+    
+			setTimeout(() => {
+			console.log('After logout - Username:', document.getElementById('username').value);
+			console.log('After logout - Password:', document.getElementById('password').value);
+			console.log('Focus on:', document.activeElement.id);
+				}, 100);
+		}
 		
-// VARIABEL BARU UNTUK DRAGGABLE
-let fabDragState = {
-    isDragging: false,
-    startX: 0,
-    startY: 0,
-    initialX: 0,
-    initialY: 0
-};
-
-// FUNGSI BARU: Inisialisasi draggable FAB
-function initDraggableFab() {
-    const fab = document.querySelector('.fab');
-    const boundary = document.querySelector('.fab-boundary');
-    
-    // Jika boundary belum ada, buat elemen boundary
-    if (!boundary) {
-        const boundaryEl = document.createElement('div');
-        boundaryEl.className = 'fab-boundary';
-        document.body.appendChild(boundaryEl);
-    }
-    
-    // Event untuk desktop (mouse)
-    fab.addEventListener('mousedown', startDrag);
-    
-    // Event untuk mobile (touch)
-    fab.addEventListener('touchstart', startDrag, { passive: false });
-    
-    // Event global untuk drag
-    document.addEventListener('mousemove', drag);
-    document.addEventListener('touchmove', drag, { passive: false });
-    
-    // Event global untuk stop drag
-    document.addEventListener('mouseup', stopDrag);
-    document.addEventListener('touchend', stopDrag);
-}
-
-// FUNGSI BARU: Start dragging
-function startDrag(e) {
-    e.preventDefault();
-    
-    const fab = document.querySelector('.fab');
-    fabDragState.isDragging = true;
-    fab.style.cursor = 'grabbing';
-    fab.classList.add('fab-dragging');
-    
-    // Get initial position
-    const rect = fab.getBoundingClientRect();
-    fabDragState.initialX = rect.left;
-    fabDragState.initialY = rect.top;
-    
-    // Get start coordinates
-    if (e.type === 'mousedown') {
-        fabDragState.startX = e.clientX;
-        fabDragState.startY = e.clientY;
-    } else if (e.type === 'touchstart') {
-        fabDragState.startX = e.touches[0].clientX;
-        fabDragState.startY = e.touches[0].clientY;
-    }
-}
-
-// FUNGSI BARU: During drag
-function drag(e) {
-    if (!fabDragState.isDragging) return;
-    e.preventDefault();
-    
-    const fab = document.querySelector('.fab');
-    let currentX, currentY;
-    
-    // Get current coordinates
-    if (e.type === 'mousemove') {
-        currentX = e.clientX;
-        currentY = e.clientY;
-    } else if (e.type === 'touchmove') {
-        currentX = e.touches[0].clientX;
-        currentY = e.touches[0].clientY;
-    }
-    
-    // Calculate new position
-    const deltaX = currentX - fabDragState.startX;
-    const deltaY = currentY - fabDragState.startY;
-    
-    const newX = fabDragState.initialX + deltaX;
-    const newY = fabDragState.initialY + deltaY;
-    
-    // Apply boundary constraints
-    const boundary = document.querySelector('.fab-boundary').getBoundingClientRect();
-    const fabRect = fab.getBoundingClientRect();
-    
-    const constrainedX = Math.max(boundary.left, Math.min(newX, boundary.right - fabRect.width));
-    const constrainedY = Math.max(boundary.top, Math.min(newY, boundary.bottom - fabRect.height));
-    
-    // Apply new position
-    fab.style.left = `${constrainedX}px`;
-    fab.style.top = `${constrainedY}px`;
-    fab.style.right = 'auto'; // Reset right positioning
-    fab.style.bottom = 'auto'; // Reset bottom positioning
-}
-
-// FUNGSI BARU: Stop dragging
-function stopDrag() {
-    if (!fabDragState.isDragging) return;
-    
-    const fab = document.querySelector('.fab');
-    fabDragState.isDragging = false;
-    fab.style.cursor = 'grab';
-    fab.classList.remove('fab-dragging');
-    
-    // Simpan posisi terakhir ke localStorage
-    saveFabPosition();
-}
-
-// FUNGSI BARU: Simpan posisi FAB
-function saveFabPosition() {
-    const fab = document.querySelector('.fab');
-    const rect = fab.getBoundingClientRect();
-    
-    const position = {
-        x: rect.left,
-        y: rect.top,
-        timestamp: Date.now()
-    };
-    
-    localStorage.setItem('cbt_fab_position', JSON.stringify(position));
-}
-
-// FUNGSI BARU: Load posisi FAB yang disimpan
-function loadFabPosition() {
-    const saved = localStorage.getItem('cbt_fab_position');
-    if (saved) {
-        try {
-            const position = JSON.parse(saved);
-            const fab = document.querySelector('.fab');
-            
-            // Cek jika posisi masih valid (dalam 7 hari)
-            const isRecent = Date.now() - position.timestamp < 7 * 24 * 60 * 60 * 1000;
-            
-            if (isRecent && position.x > 0 && position.y > 0) {
-                fab.style.left = `${position.x}px`;
-                fab.style.top = `${position.y}px`;
-                fab.style.right = 'auto';
-                fab.style.bottom = 'auto';
-            }
-        } catch (error) {
-            console.log('Error loading FAB position:', error);
-        }
-    }
-}
-
-// FUNGSI BARU: Reset posisi FAB ke default
-function resetFabPosition() {
-    const fab = document.querySelector('.fab');
-    fab.style.left = 'auto';
-    fab.style.top = 'auto';
-    fab.style.right = '20px';
-    fab.style.bottom = '20px';
-    
-    localStorage.removeItem('cbt_fab_position');
-}
-	
-// FUNGSI BARU: Handle logo loading dan fallback
-function initLogo() {
-    const logoImg = document.querySelector('.logo img');
-    const logoContainer = document.querySelector('.logo');
-    
-    if (logoImg) {
-        // Event ketika gambar berhasil load
-        logoImg.addEventListener('load', function() {
-            console.log('Logo berhasil dimuat');
-            logoContainer.style.background = 'transparent';
-        });
-        
-        // Event ketika gambar gagal load
-        logoImg.addEventListener('error', function() {
-            console.log('Logo gagal dimuat, menggunakan fallback');
-            this.style.display = 'none';
-            // Fallback ke emoji atau teks
-            logoContainer.innerHTML = '🏫';
-            logoContainer.style.fontSize = '3rem';
-            logoContainer.style.display = 'flex';
-            logoContainer.style.alignItems = 'center';
-            logoContainer.style.justifyContent = 'center';
-        });
-        
-        // Preload logo
-        logoImg.src = "https://lh3.google.com/u/0/d/1Xe6WNdx-_L0tRIM52U6QJqFpTkIfOGBQ";
-    }
-}
-
-// Panggil initLogo ketika halaman dimuat
-document.addEventListener('DOMContentLoaded', function() {
-    checkExistingSession();
-    initLogo(); // PERBAIKAN: Inisialisasi logo
-    
-    // Inisialisasi FAB ketika halaman dimuat
-    setTimeout(() => {
-        if (document.querySelector('.fab')) {
-            initDraggableFab();
-            loadFabPosition();
-        }
-    }, 500);
-});
-	
     </script>
 </body>
 </html>
-
