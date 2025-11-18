@@ -1,7 +1,7 @@
 {
   "name": "CBT Ujian Sekolah",
   "short_name": "CBT",
-  "start_url": "/",
+  "start_url": "https://arjunasastrabahu0705.github.io/cbt-online.github.io/",
   "display": "standalone",
   "background_color": "#f5f5f5",
   "theme_color": "#5D3A9B",
@@ -18,3 +18,4 @@
     }
   ]
 }
+
