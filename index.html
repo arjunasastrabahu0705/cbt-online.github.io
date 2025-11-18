@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CBT Ujian Sekolah</title>
   <meta name="theme-color" content="#5D3A9B">
-  <!--<link rel="manifest" href="application/manifest+json,{%22name%22:%22CBT%20Ujian%22,%22short_name%22:%22CBT%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23f5f5f5%22,%22theme_color%22:%22%235D3A9B%22}">-->
-  <link rel="manifest" href="https://drive.google.com/uc?export=download&id=1iJY0l6rphHLhE2O1xGmNQ5SgYWwmCrwv">
-  <link rel="icon" type="image/png" href="https://drive.google.com/uc?export=download&id=1JBxY2nmn3oV7odKn2PzAvqz52Nu_QaLF">
-  <link rel="apple-touch-icon" href="https://drive.google.com/uc?export=download&id=1JBxY2nmn3oV7odKn2PzAvqz52Nu_QaLF">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <style>
     :root {
       --primary: #5D3A9B;
@@ -39,11 +38,10 @@
       background: white;
       border-radius: 12px;
       padding: 16px;
-      margin: 12px auto; /* ← tambahkan 'auto' untuk center */
+      margin: 12px auto;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-	  /* ✅ Tambahkan ini untuk mengatur lebar */
-	  width: 90%;        /* ← 90% dari lebar layar */
-	  max-width: 400px;  /* ← maksimal 400px (tidak terlalu lebar di layar besar) */
+      width: 90%;
+      max-width: 400px;
     }
 
     .btn {
@@ -58,15 +56,7 @@
       font-size: 18px;
       cursor: pointer;
       font-weight: bold;
-	  max-width: 400px;
     }
-	
-	.btn-full {
-	 width: 90%;
-	 max-width: 400px;
-	 margin: 12px auto !important;
-	 display: block;
-	}
 
     .btn:disabled {
       background-color: var(--disabled);
@@ -100,8 +90,8 @@
       margin: 12px auto;
       border-left: 4px solid #ffc107;
       text-align: center;
-	  width: 90%;        /* ← 90% dari lebar layar */
-	  max-width: 400px;  /* ← maksimal 400px (tidak terlalu lebar di layar besar) */
+      width: 90%;
+      max-width: 400px;
     }
 
     .hidden { display: none; }
@@ -133,10 +123,12 @@
   <!-- LOGIN -->
   <div id="login-screen">
     <div class="card">
-		 <img src="https://i.imgur.com/pckiPOg.png" 
-         alt="Logo Sekolah" 
-         style="display: block; margin: 0 auto 20px auto; width: 90px; height: 90px; border-radius: 0px; box-shadow: 0 2px 6px rgba(0,0,0,0.0);">
       <h2 class="center" style="margin-bottom:20px;">Login Siswa</h2>
+
+      <img src="logo.png" alt="Logo Sekolah" style="display: block; margin: 0 auto 20px auto; width: 120px; height: auto; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+
+      <h3 class="center" style="color:#5D3A9B; margin-bottom:25px;">SMAN 1 JENEPONTO</h3>
+
       <input type="text" id="username" placeholder="Username (Nomor Peserta)" autocomplete="off">
       <input type="password" id="password" placeholder="Password" autocomplete="off">
       <button class="btn" onclick="login()">Login</button>
@@ -145,9 +137,10 @@
     <div class="alert">
       <strong>📌 Petunjuk Penting:</strong><br>
       1. Buka link ini di <strong>Chrome (Android)</strong> atau <strong>Safari (iPhone)</strong><br>
-      2. Klik <strong>⋮ → Add to Home Screen</strong><br>
-      3. Buka dari <strong>ikon di home screen</strong> saat ujian<br>
-      4. Jangan buka aplikasi lain saat ujian!
+      2. Klik <strong>⋮ → Tambah ke layar utama</strong> (Android)<br>
+      3. Atau klik <strong>📤 → Add to Home Screen</strong> (iPhone)<br>
+      4. Buka dari <strong>ikon di home screen</strong> saat ujian<br>
+      5. Jangan buka aplikasi lain saat ujian!
     </div>
   </div>
 
@@ -166,8 +159,8 @@
     </div>
 
     <div class="card" style="text-align: center; padding: 16px;">
-    <button class="btn btn-full" onclick="logout()">Logout</button>
-	</div>
+      <button class="btn" style="width: 100%; max-width: 360px; margin: 0 auto;">Logout</button>
+    </div>
   </div>
 
   <!-- EXAM -->
@@ -181,16 +174,14 @@
   </div>
 
   <script>
-    // 🔑 Sudah diisi dengan URL Web App Anda
-    const API_URL = 'https://script.google.com/macros/s/AKfycbzLUnK1MPN8HFhneM8M4wGlYLPZhnpuiMxuu1gq7xnOUx_hksfXVnAXct3wEVfzvekIpw/exec';
-	
-    // Cek apakah aplikasi berjalan di mode standalone
+    // 🔑 GANTI DENGAN URL WEB APP ANDA
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxKB_NxmBlb8P2e37zUNgamZYO126GA97HMEoUXBlWwkxMLnbWggCtQy1vbDqkQ0UX5/exec';
+
     function isStandaloneMode() {
       return window.matchMedia('(display-mode: standalone)').matches ||
              window.navigator.standalone === true;
     }
 
-    // --- Functions ---
     function login() {
       var u = document.getElementById('username').value.trim();
       var p = document.getElementById('password').value.trim();
@@ -255,18 +246,16 @@
 
     function startExam(ujian) {
       if (!isStandaloneMode()) {
-        alert('⚠️ Ujian hanya bisa dimulai dalam mode layar penuh.\n\n1. Buka halaman ini di Chrome/Safari\n2. Klik ⋮ → "Add to Home Screen"\n3. Buka dari ikon di home screen');
+        alert('⚠️ Ujian hanya bisa dimulai dalam mode layar penuh.\n\n1. Buka halaman ini di Chrome/Safari\n2. Klik ⋮ → "Tambah ke layar utama"\n3. Buka dari ikon di home screen');
         return;
       }
 
-      // Cek apakah sudah pernah mulai
       var startedExams = JSON.parse(localStorage.getItem('startedExams') || '[]');
       if (startedExams.includes(ujian.soal_id)) {
         alert('Ujian ini sudah pernah Anda mulai. Tidak bisa diakses ulang.');
         return;
       }
 
-      // Tandai bahwa ujian ini sudah dimulai
       startedExams.push(ujian.soal_id);
       localStorage.setItem('startedExams', JSON.stringify(startedExams));
 
@@ -373,7 +362,6 @@
       document.getElementById(id).classList.remove('hidden');
     }
 
-    // 🔒 ANTI-CHEATING
     var violationCount = 0;
 
     document.addEventListener('visibilitychange', function() {
@@ -388,7 +376,6 @@
       }
     });
 
-    // Block actions
     document.addEventListener('copy', function(e) { e.preventDefault(); }, true);
     document.addEventListener('paste', function(e) { e.preventDefault(); }, true);
     document.addEventListener('cut', function(e) { e.preventDefault(); }, true);
@@ -406,7 +393,6 @@
       }
     }, true);
 
-    // Auto-login if already logged in
     window.onload = function() {
       if (localStorage.getItem('user')) {
         loadUjian();
@@ -414,7 +400,6 @@
       }
     };
 
-    // Prevent zoom (mobile)
     document.addEventListener('touchmove', function(e) {
       if (e.scale !== 1) e.preventDefault();
     }, { passive: false });
